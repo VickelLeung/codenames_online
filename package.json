@@ -1,0 +1,18 @@
+{
+  "name": "password",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "concurrently": "^5.2.0",
+    "ws": "^7.2.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "concurrently \"cd backend && npm start\" \"cd client && npm start\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
