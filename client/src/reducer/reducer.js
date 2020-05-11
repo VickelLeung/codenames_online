@@ -6,6 +6,7 @@ const initialState = {
   redScore: 10,
   blueScore: 10,
   userDetail: {},
+  isConnected: false,
 };
 
 export default function reducer(state = initialState, action) {
@@ -24,6 +25,8 @@ export default function reducer(state = initialState, action) {
       return { ...state, isSpymaster: action.payload };
     case "SET_DEATH":
       return { ...state, isDeath: true };
+    case "SET_CONNECTION":
+      return { ...state, isConnected: action.payload };
     default:
       return state;
   }

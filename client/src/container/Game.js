@@ -7,6 +7,7 @@ import Button from "@material-ui/core/Button";
 import { setTurn, alternateSpymaster } from "../action/action";
 import { Scoreboard } from "../component/Scoreboard/Scoreboard";
 import { CardContainer } from "../container/CardContainer/CardContainer";
+import { setConnection } from "../action/action";
 
 const URL = "ws://localhost:3030";
 
@@ -15,6 +16,16 @@ class Game extends PureComponent {
 
   state = { userInfo: {} };
   componentDidMount = () => {
+    this.ws.onopen = () => {
+      // on connecting, do nothing but log it to the console
+      console.log("connected");
+      this.props.setConnection(true);
+      const message = {
+        type: "getCards",
+      };
+      this.ws.send(JSON.stringify(message));
+    };
+
     this.setState({ userInfo: this.props.details });
 
     this.ws.onmessage = (evt) => {
@@ -34,6 +45,15 @@ class Game extends PureComponent {
           break;
       }
       // this.addMessage(message);
+    };
+
+    this.ws.onclose = () => {
+      console.log("disconnected");
+      // automatically try to reconnect on connection loss
+      this.setState({
+        ws: new WebSocket(URL),
+        name: this.props.details.username,
+      });
     };
   };
 
@@ -117,6 +137,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     alternateSpymaster: (info) => {
       dispatch(alternateSpymaster(info));
+    },
+    setConnection: (info) => {
+      dispatch(setConnection(info));
     },
   };
 };

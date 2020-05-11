@@ -74,8 +74,7 @@ class Cards extends PureComponent {
               };
               this.ws.send(JSON.stringify(message));
             }
-            console.log("color: " + this.props.color);
-            console.log(this.props.redScore + " " + this.props.blueScore);
+            this.props.onClick(this.props.children);
           }}
         >
           <CardContent>

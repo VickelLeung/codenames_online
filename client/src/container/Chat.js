@@ -8,7 +8,8 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Axios from "axios";
 import styled from "styled-components";
-import UserJoined from "../component/UserJoined";
+import { setConnection } from "../action/action";
+// import UserJoined from "../component/UserJoined";
 
 const URL = "ws://localhost:3030";
 
@@ -24,10 +25,11 @@ class Chat extends Component {
   ws = new WebSocket(URL);
 
   componentDidMount() {
-    this.ws.onopen = () => {
-      // on connecting, do nothing but log it to the console
-      console.log("connected");
-    };
+    // this.ws.onopen = () => {
+    //   // on connecting, do nothing but log it to the console
+    //   console.log("connected");
+    //   this.props.setConnection(true);
+    // };
 
     this.ws.onmessage = (evt) => {
       // on receiving a message, add it to the list of messages
@@ -45,14 +47,14 @@ class Chat extends Component {
       }
     };
 
-    this.ws.onclose = () => {
-      console.log("disconnected");
-      // automatically try to reconnect on connection loss
-      this.setState({
-        ws: new WebSocket(URL),
-        name: this.props.details.username,
-      });
-    };
+    // this.ws.onclose = () => {
+    //   console.log("disconnected");
+    //   // automatically try to reconnect on connection loss
+    //   this.setState({
+    //     ws: new WebSocket(URL),
+    //     name: this.props.details.username,
+    //   });
+    // };
   }
 
   addMessage = (message) => {
@@ -136,6 +138,14 @@ const mapStateToProps = (state) => {
   return { details: state.userDetail };
 };
 
-export default connect(mapStateToProps, null)(Chat);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setConnection: (info) => {
+      dispatch(setConnection(info));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Chat);
 
 const JoinRoom = styled(Button)``;

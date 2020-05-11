@@ -4,16 +4,71 @@ import Cards from "../../component/Cards/Cards";
 
 import styled from "styled-components";
 
+const URL = "ws://localhost:3030";
+
 class CardContainer extends PureComponent {
-  clicked = () => {
-    console.log("click");
+  ws = new WebSocket(URL);
+  state = {
+    cards: [],
+  };
+  update = (data) => {
+    console.log(data);
+
+    const message = {
+      type: "updateCards",
+      name: data,
+    };
+    this.ws.send(JSON.stringify(message));
+  };
+
+  componentDidMount = () => {
+    console.log("Card loaded");
+
+    // const message = {
+    //   type: "generateCards",
+    // };
+    // this.ws.send(JSON.stringify(message));
+
+    this.ws.onmessage = (evt) => {
+      // on receiving a message, add it to the list of messages
+      const message = JSON.parse(evt.data);
+      console.log(message);
+      switch (message.type) {
+        case "getCards":
+          this.addCards(message.cards);
+          break;
+      }
+    };
+  };
+
+  addCards = (card) => {
+    this.setState({ cards: card });
   };
 
   render() {
     return (
       <Wrapper>
-        <Cards color="red">Fan</Cards>
-        <Cards onClick={this.clicked} color="blue">
+        {this.state.cards.map((items, index) => (
+          <Cards
+            key={index}
+            onClick={this.update}
+            type={items.type}
+            color={items.color}
+            isChecked={items.isChecked}
+          >
+            {items.name}
+          </Cards>
+        ))}
+        {/* {this.state.cards.map((items) => {
+          <Cards onClick={this.update} type={items.type} color={items.color}>
+            {items.name}
+          </Cards>;
+        })} */}
+
+        {/* <Cards onClick={this.update} color="red">
+          Fan
+        </Cards>
+        <Cards onClick={this.update} color="blue">
           Blue
         </Cards>
         <Cards type="red" color="red" isChecked={true}>
@@ -55,7 +110,7 @@ class CardContainer extends PureComponent {
         </Cards>
         <Cards type="death" color="black" isChecked={true}>
           Death
-        </Cards>
+        </Cards> */}
       </Wrapper>
     );
   }

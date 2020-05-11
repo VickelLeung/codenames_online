@@ -1,12 +1,27 @@
 // const express = require("express");
 // const app = express();
+const mongoose = require("mongoose");
+let Cards = require("./Model/CardModel");
 const port = 3030 || process.env.port;
+require("dotenv").config();
 
 // latest 100 messages
 let history = [];
-
-//
+let loadingCard = [];
+let gameState = [];
+// set number of spymaster
 let numSpymaster = 2;
+
+mongoose.connect(process.env.uri, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+});
+
+const connection = mongoose.connection;
+
+connection.once("open", () => {
+  console.log("connection established");
+});
 
 const WebSocket = require("ws");
 
@@ -18,7 +33,7 @@ wss.on("connection", function connection(ws) {
   ws.on("message", function incoming(data) {
     let getData = JSON.parse(data);
     console.log(getData.type);
-
+    console.log(loadingCard);
     const sendMessage = () => {
       wss.clients.forEach(function each(client) {
         if (client !== ws && client.readyState === WebSocket.OPEN) {
@@ -112,6 +127,40 @@ wss.on("connection", function connection(ws) {
       });
     };
 
+    const getCards = () => {
+      wss.clients.forEach(function each(client) {
+        // if (client.readyState === WebSocket.OPEN) {
+        let sendObj = {
+          type: "getCards",
+          cards: loadingCard,
+        };
+        client.send(JSON.stringify(sendObj));
+        // }
+      });
+    };
+
+    const updateCards = () => {
+      //find name and update it
+      let getData = JSON.parse(data);
+      for (let i = 0; i < loadingCard.length; i++) {
+        if (loadingCard[i].name == getData.name) {
+          loadingCard[i].isChecked = true;
+          break;
+        }
+      }
+
+      wss.clients.forEach(function each(client) {
+        // if (client.readyState === WebSocket.OPEN) {
+
+        let sendObj = {
+          type: "getCards",
+          cards: loadingCard,
+        };
+        client.send(JSON.stringify(sendObj));
+        // }
+      });
+    };
+
     switch (getData.type) {
       case "chat":
         sendMessage();
@@ -132,9 +181,98 @@ wss.on("connection", function connection(ws) {
       case "spymaster":
         spymaster();
         break;
+      case "getCards":
+        getCards();
+        break;
+      case "updateCards":
+        updateCards();
+        break;
     }
   });
 });
+
+const generateCards = () => {
+  console.log("inside generate");
+
+  Cards.find()
+    .then((obj) => {
+      let randomNumbers = [];
+      let cardContainer = [];
+      //get 25 cards from db
+
+      // console.log(obj[0].name);
+
+      for (let i = 0; i < 25; i++) {
+        let rand = Math.floor(Math.random() * obj.length);
+        if (!randomNumbers.includes(rand)) {
+          randomNumbers.push(rand);
+        } else {
+          i--;
+        }
+      }
+
+      //assign 4 as neutral
+      for (let i = 0; i < 4; i++) {
+        let card = {
+          name: obj[randomNumbers[i]].name,
+          type: "neutral",
+          color: "green",
+          isChecked: false,
+        };
+        cardContainer.push(card);
+      }
+
+      //assign 1 as death cards
+      for (let i = 4; i < 5; i++) {
+        let card = {
+          name: obj[randomNumbers[i]].name,
+          type: "death",
+          color: "black",
+          isChecked: false,
+        };
+        cardContainer.push(card);
+      }
+
+      //assign 10 blue cards
+      for (let i = 5; i < 15; i++) {
+        let card = {
+          name: obj[randomNumbers[i]].name,
+          type: "blue",
+          color: "blue",
+          isChecked: false,
+        };
+        cardContainer.push(card);
+      }
+      console.log("\n");
+      //assign 10 red cards
+      for (let i = 15; i < 25; i++) {
+        let card = {
+          name: obj[randomNumbers[i]].name,
+          type: "red",
+          color: "red",
+          isChecked: false,
+        };
+        cardContainer.push(card);
+      }
+
+      loadingCard = loadingCard.concat(cardContainer);
+      console.log("generated");
+      //send back to clients
+      // wss.clients.forEach(function each(client) {
+      //   if (client !== ws && client.readyState === WebSocket.OPEN) {
+      //     let sendObj = {
+      //       type: "generateCards",
+      //       cards: cardContainer,
+      //     };
+
+      //     client.send(JSON.stringify(sendObj));
+      //   }
+      // });
+    })
+    .catch((err) => console.log(err));
+};
+
+generateCards();
 
 // let getData = JSON.parse(data);
 

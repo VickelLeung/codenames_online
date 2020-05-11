@@ -30,3 +30,8 @@ export const alternateSpymaster = (userObj) => ({
   type: "ALTERNATE_SPYMASTER",
   payload: userObj,
 });
+
+export const setConnection = (userObj) => ({
+  type: "SET_CONNECTION",
+  payload: userObj,
+});
