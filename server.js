@@ -32,8 +32,8 @@ wss.on("connection", function connection(ws) {
 
   ws.on("message", function incoming(data) {
     let getData = JSON.parse(data);
-    console.log(getData.type);
-    console.log(loadingCard);
+    // console.log(getData.type);
+    // console.log(loadingCard);
 
     const sendMessage = () => {
       wss.clients.forEach(function each(client) {
@@ -55,7 +55,7 @@ wss.on("connection", function connection(ws) {
 
     const endTurn = () => {
       let getData = JSON.parse(data);
-      console.log("end turn" + getData.currentTurn);
+      // console.log("end turn" + getData.currentTurn);
       wss.clients.forEach(function each(client) {
         if (client !== ws && client.readyState === WebSocket.OPEN) {
           let sendObj = {
@@ -212,7 +212,7 @@ wss.on("connection", function connection(ws) {
 });
 
 const generateCards = () => {
-  console.log("inside generate");
+  // console.log("inside generate");
 
   Cards.find()
     .then((obj) => {
@@ -263,7 +263,7 @@ const generateCards = () => {
         };
         cardContainer.push(card);
       }
-      console.log("\n");
+      // console.log("\n");
       //assign 10 red cards
       for (let i = 15; i < 25; i++) {
         let card = {
@@ -284,9 +284,9 @@ const generateCards = () => {
         cardContainer[j] = temp;
       }
 
-      for (let i = 0; i < cardContainer.length; i++) {
-        console.log(cardContainer[i]);
-      }
+      // for (let i = 0; i < cardContainer.length; i++) {
+      //   console.log(cardContainer[i]);
+      // }
       loadingCard = [];
 
       loadingCard = loadingCard.concat(cardContainer);
