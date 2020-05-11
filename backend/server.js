@@ -34,6 +34,7 @@ wss.on("connection", function connection(ws) {
     let getData = JSON.parse(data);
     console.log(getData.type);
     console.log(loadingCard);
+
     const sendMessage = () => {
       wss.clients.forEach(function each(client) {
         if (client !== ws && client.readyState === WebSocket.OPEN) {
@@ -69,7 +70,7 @@ wss.on("connection", function connection(ws) {
     const redScore = () => {
       let getData = JSON.parse(data);
 
-      if (getData.redScore == 1) {
+      if (getData.redScore == 0) {
         sendWin("redWon");
       } else {
         wss.clients.forEach(function each(client) {
@@ -88,7 +89,7 @@ wss.on("connection", function connection(ws) {
 
     const blueScore = () => {
       let getData = JSON.parse(data);
-      if (getData.blueScore == 1) {
+      if (getData.blueScore == 0) {
         sendWin("blueWon");
       } else {
         wss.clients.forEach(function each(client) {
@@ -108,19 +109,6 @@ wss.on("connection", function connection(ws) {
         if (client !== ws && client.readyState === WebSocket.OPEN) {
           let sendObj = {
             type: x,
-          };
-          client.send(JSON.stringify(sendObj));
-        }
-      });
-    };
-
-    const spymaster = () => {
-      wss.clients.forEach(function each(client) {
-        if (client !== ws && client.readyState === WebSocket.OPEN) {
-          let getData = JSON.parse(data);
-          let sendObj = {
-            type: "spymaster",
-            numSpymaster: getData.numSpymaster - 1,
           };
           client.send(JSON.stringify(sendObj));
         }
@@ -161,6 +149,35 @@ wss.on("connection", function connection(ws) {
       });
     };
 
+    const nextGame = () => {
+      generateCards();
+      getCards();
+    };
+
+    const updateSpymaster = () => {
+      let getData = JSON.parse(data);
+      let returnType = "";
+      if (numSpymaster >= 0) {
+        if (getData.isActive) {
+          numSpymaster - 1;
+          returnType = "spymaster";
+        } else if (!getData.isActive) {
+          numSpymaster + 1;
+          returnType = "player";
+        }
+        console.log(getData.player);
+        wss.clients.forEach(function each(client) {
+          if (client !== ws && client.readyState === WebSocket.OPEN) {
+            let sendObj = {
+              type: returnType,
+              name: getData.player,
+            };
+            client.send(JSON.stringify(sendObj));
+          }
+        });
+      }
+    };
+
     switch (getData.type) {
       case "chat":
         sendMessage();
@@ -178,14 +195,17 @@ wss.on("connection", function connection(ws) {
       case "blueScore":
         blueScore();
         break;
-      case "spymaster":
-        spymaster();
-        break;
       case "getCards":
         getCards();
         break;
+      case "nextGame":
+        nextGame();
+        break;
       case "updateCards":
         updateCards();
+        break;
+      case "spymaster":
+        updateSpymaster();
         break;
     }
   });
@@ -255,19 +275,21 @@ const generateCards = () => {
         cardContainer.push(card);
       }
 
-      loadingCard = loadingCard.concat(cardContainer);
-      console.log("generated");
-      //send back to clients
-      // wss.clients.forEach(function each(client) {
-      //   if (client !== ws && client.readyState === WebSocket.OPEN) {
-      //     let sendObj = {
-      //       type: "generateCards",
-      //       cards: cardContainer,
-      //     };
+      //shuffle array with Fisher-Yates:
 
-      //     client.send(JSON.stringify(sendObj));
-      //   }
-      // });
+      for (let i = cardContainer.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        let temp = cardContainer[i];
+        cardContainer[i] = cardContainer[j];
+        cardContainer[j] = temp;
+      }
+
+      for (let i = 0; i < cardContainer.length; i++) {
+        console.log(cardContainer[i]);
+      }
+      loadingCard = [];
+
+      loadingCard = loadingCard.concat(cardContainer);
     })
     .catch((err) => console.log(err));
 };

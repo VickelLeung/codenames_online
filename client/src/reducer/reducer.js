@@ -5,7 +5,7 @@ const initialState = {
   isDeath: false,
   redScore: 10,
   blueScore: 10,
-  userDetail: {},
+  username: "",
   isConnected: false,
 };
 
@@ -13,7 +13,7 @@ export default function reducer(state = initialState, action) {
   switch (action.type) {
     case "SET_USER":
       console.log("test");
-      return { ...state, userDetail: action.payload };
+      return { ...state, username: action.payload };
     case "SET_TURN":
       return { ...state, currentTurn: action.payload };
     case "SET_REDSCORE":

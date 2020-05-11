@@ -9,7 +9,7 @@ import { Scoreboard } from "../component/Scoreboard/Scoreboard";
 import { CardContainer } from "../container/CardContainer/CardContainer";
 import { setConnection } from "../action/action";
 
-const URL = "ws://localhost:3030";
+const URL = "ws:https://thecodenamebackend.herokuapp.com/";
 
 class Game extends PureComponent {
   ws = new WebSocket(URL);
@@ -47,14 +47,14 @@ class Game extends PureComponent {
       // this.addMessage(message);
     };
 
-    this.ws.onclose = () => {
-      console.log("disconnected");
-      // automatically try to reconnect on connection loss
-      this.setState({
-        ws: new WebSocket(URL),
-        name: this.props.details.username,
-      });
-    };
+    // this.ws.onclose = () => {
+    //   console.log("disconnected");
+    //   // automatically try to reconnect on connection loss
+    //   this.setState({
+    //     ws: new WebSocket(URL),
+    //     name: this.props.details.username,
+    //   });
+    // };
   };
 
   endTurn = () => {
@@ -64,10 +64,8 @@ class Game extends PureComponent {
     } else {
       turn = "RED";
     }
-    // console.log("turn " + turn);
     this.props.setTurn(turn);
 
-    // on submitting the ChatInput form, send the message, add it to the list and reset the input
     const message = {
       type: "endTurn",
       currentTurn: turn,
@@ -75,11 +73,30 @@ class Game extends PureComponent {
     this.ws.send(JSON.stringify(message));
   };
 
+  nextGame = () => {
+    const message = {
+      type: "nextGame",
+    };
+    this.ws.send(JSON.stringify(message));
+  };
+
+  alternateSpy = (value) => {
+    //send back to server
+    console.log(this.props.username);
+    const message = {
+      type: "spymaster",
+      player: this.props.username,
+      isActive: value,
+    };
+    this.ws.send(JSON.stringify(message));
+
+    this.props.alternateSpymaster(value);
+  };
+
   render() {
     return (
       <Wrapper>
         <h1>Codenames</h1>
-        {/* <h3>Welcome {this.state.userInfo.username}</h3> */}
 
         <ScoreContainer>
           <Scoreboard name="BLUE" Number={this.props.blueScore} />
@@ -91,13 +108,13 @@ class Game extends PureComponent {
             <PlayerMode>
               <EndBtn
                 disabled={!this.props.spy}
-                onClick={() => this.props.alternateSpymaster(false)}
+                onClick={() => this.alternateSpy(false)}
               >
                 Player
               </EndBtn>
               <EndBtn
                 disabled={this.props.spy}
-                onClick={() => this.props.alternateSpymaster(true)}
+                onClick={() => this.alternateSpy(true)}
               >
                 Spymaster
               </EndBtn>
@@ -115,6 +132,7 @@ class Game extends PureComponent {
         </Container>
 
         <EndBtn onClick={this.endTurn}>End turn</EndBtn>
+        <EndBtn onClick={this.nextGame}>Next game</EndBtn>
       </Wrapper>
     );
   }
@@ -122,6 +140,7 @@ class Game extends PureComponent {
 
 const mapStateToProps = (state) => {
   return {
+    username: state.username,
     redScore: state.redScore,
     blueScore: state.blueScore,
     currentTurn: state.currentTurn,

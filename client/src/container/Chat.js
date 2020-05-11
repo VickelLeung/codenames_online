@@ -8,10 +8,10 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Axios from "axios";
 import styled from "styled-components";
-import { setConnection } from "../action/action";
-// import UserJoined from "../component/UserJoined";
+import { setConnection, setUser } from "../action/action";
+import Radio from "@material-ui/core/Radio";
 
-const URL = "ws://localhost:3030";
+const URL = "ws:https://thecodenamebackend.herokuapp.com/";
 
 class Chat extends Component {
   state = {
@@ -42,6 +42,12 @@ class Chat extends Component {
           this.addMessage(message);
           break;
         case "join":
+          this.addMessage(message);
+          break;
+        case "spymaster":
+          this.addMessage(message);
+          break;
+        case "player":
           this.addMessage(message);
           break;
       }
@@ -86,6 +92,7 @@ class Chat extends Component {
         name: this.state.username,
       };
       this.ws.send(JSON.stringify(message));
+      this.props.setUser(this.state.username);
     } else {
       alert("error, enter fill your username");
     }
@@ -94,15 +101,15 @@ class Chat extends Component {
   render() {
     return (
       <div>
-        {/* <UserJoined name={message.name} /> */}
         <TextField
           label="Username"
           onChange={(e) => {
             this.setState({ username: e.target.value });
-            //this.ws.send(JSON.stringify({ username: e.target.value }));
           }}
           value={this.state.username}
         />
+        <Radio />
+        <Radio />
         <JoinRoom onClick={this.joinChat}>Join</JoinRoom>
         <Element
           style={{
@@ -142,6 +149,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setConnection: (info) => {
       dispatch(setConnection(info));
+    },
+    setUser: (info) => {
+      dispatch(setUser(info));
     },
   };
 };

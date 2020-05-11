@@ -6,7 +6,8 @@ import { connect } from "react-redux";
 import { setUser } from "../action/action";
 import { Link, withRouter } from "react-router-dom";
 
-const URL = "ws://localhost:3030";
+const URL = "ws:https://thecodenamebackend.herokuapp.com/";
+//const URL = "ws://localhost:3030";
 
 class Setting extends PureComponent {
   state = {

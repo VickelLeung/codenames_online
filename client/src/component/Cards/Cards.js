@@ -6,9 +6,10 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import { setRedScore, setBlueScore } from "../../action/action";
+import { setTurn, setRedScore, setBlueScore } from "../../action/action";
 
-const URL = "ws://localhost:3030";
+const URL = "ws:https://thecodenamebackend.herokuapp.com/";
+
 
 class Cards extends PureComponent {
   ws = new WebSocket(URL);
@@ -42,6 +43,68 @@ class Cards extends PureComponent {
     return color;
   };
 
+  endTurn = () => {
+    let turn = this.props.currentTurn;
+    if (turn == "RED") {
+      turn = "BLUE";
+    } else {
+      turn = "RED";
+    }
+    console.log(this.props.currentTurn);
+    this.props.setTurn(turn);
+
+    const message = {
+      type: "endTurn",
+      currentTurn: turn,
+    };
+    this.ws.send(JSON.stringify(message));
+    console.log("end");
+  };
+
+  sendToServer = () => {
+    console.log(this.props.color);
+    let message = {};
+    if (this.props.color == "green") {
+      this.endTurn();
+    } else {
+      if (this.props.color == "red" && this.props.currentTurn == "RED") {
+        message = {
+          type: "redScore",
+          redScore: this.props.redScore,
+        };
+      } else if (
+        this.props.color == "red" &&
+        this.props.currentTurn == "BLUE"
+      ) {
+        message = {
+          type: "redScore",
+          redScore: this.props.redScore,
+        };
+        this.endTurn();
+      }
+
+      if (this.props.color == "blue" && this.props.currentTurn == "BLUE") {
+        message = {
+          type: "blueScore",
+          blueScore: this.props.blueScore,
+        };
+      } else if (
+        this.props.color == "blue" &&
+        this.props.currentTurn == "RED"
+      ) {
+        message = {
+          type: "blueScore",
+          blueScore: this.props.blueScore,
+        };
+        this.endTurn();
+      }
+
+      this.ws.send(JSON.stringify(message));
+    }
+
+    this.props.onClick(this.props.children);
+  };
+
   displaySpymaster = { color: this.props.color };
 
   displayPlayer = { margin: "1%", width: "15%", boxSizing: " border-box" };
@@ -61,20 +124,7 @@ class Cards extends PureComponent {
         <CardActionArea
           disabled={this.props.spy || this.props.isChecked}
           onClick={() => {
-            if (this.props.color == "red") {
-              const message = {
-                type: "redScore",
-                redScore: this.props.redScore,
-              };
-              this.ws.send(JSON.stringify(message));
-            } else if (this.props.color == "blue") {
-              const message = {
-                type: "blueScore",
-                blueScore: this.props.blueScore,
-              };
-              this.ws.send(JSON.stringify(message));
-            }
-            this.props.onClick(this.props.children);
+            this.sendToServer();
           }}
         >
           <CardContent>
@@ -100,6 +150,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    setTurn: (info) => {
+      dispatch(setTurn(info));
+    },
     setRedScore: (info) => {
       dispatch(setRedScore(info));
     },

@@ -10,7 +10,11 @@ export default ({ type, name, message }) => (
       </div>
     ) : null}
     {type == "join" ? <p>{name} has joined the chat.</p> : null}
+    {type == "spymaster" ? <p>{name} became a spymaster.</p> : null}
+    {type == "player" ? <p>{name} became a player.</p> : null}
   </Wrapper>
 );
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  text-align: left;
+`;

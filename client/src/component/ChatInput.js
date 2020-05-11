@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import TextField from "@material-ui/core/TextField";
+import SendIcon from "@material-ui/icons/Send";
 
 class ChatInput extends Component {
   static propTypes = {
@@ -25,7 +27,8 @@ class ChatInput extends Component {
           value={this.state.message}
           onChange={(e) => this.setState({ message: e.target.value })}
         />
-        <input type="submit" value={"Send"} />
+
+        <input type="submit"></input>
       </form>
     );
   }
