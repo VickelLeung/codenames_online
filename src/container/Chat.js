@@ -6,7 +6,6 @@ import { connect } from "react-redux";
 import { Element } from "react-scroll";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import Axios from "axios";
 import styled from "styled-components";
 import { setConnection, setUser } from "../action/action";
 import Radio from "@material-ui/core/Radio";
