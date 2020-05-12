@@ -10,23 +10,21 @@ import { setTurn, setRedScore, setBlueScore } from "../../action/action";
 
 const URL = "ws:https://thecodenamebackend.herokuapp.com/";
 
-
 class Cards extends PureComponent {
- // ws = new WebSocket(URL);
+  ws = new WebSocket(URL);
   componentDidMount = () => {
-    //this.ws.onmessage = (evt) => {
-      // on receiving a message, add it to the list of messages
-
-      const message = JSON.parse(evt.data);
-      switch (message.type) {
-        case "redScore":
-          this.props.setRedScore(message.redScore);
-          break;
-        case "blueScore":
-          this.props.setBlueScore(message.blueScore);
-          break;
-      }
-    };
+    // this.ws.onmessage = (evt) => {
+    //   // on receiving a message, add it to the list of messages
+    //   const message = JSON.parse(evt.data);
+    //   switch (message.type) {
+    //     case "redScore":
+    //       this.props.setRedScore(message.redScore);
+    //       break;
+    //     case "blueScore":
+    //       this.props.setBlueScore(message.blueScore);
+    //       break;
+    //   }
+    // };
   };
 
   getColors = () => {
@@ -99,7 +97,7 @@ class Cards extends PureComponent {
         this.endTurn();
       }
 
-     // this.ws.send(JSON.stringify(message));
+      // this.ws.send(JSON.stringify(message));
     }
 
     this.props.onClick(this.props.children);
