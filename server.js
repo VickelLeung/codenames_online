@@ -9,9 +9,10 @@ const INDEX = "/index.html";
 const PORT = process.env.PORT || 3000;
 require("dotenv").config();
 
-const server = express()
-  .use((req, res) => res.sendFile(INDEX, { root: __dirname }))
-  .listen(PORT, () => console.log(`Listening on ${PORT}`));
+const server = express().listen(PORT, () =>
+  console.log(`Listening on ${PORT}`)
+);
+//.use((req, res) => res.sendFile(INDEX, { root: __dirname }))
 
 // app.use(cors());
 // app.use(express.json());
