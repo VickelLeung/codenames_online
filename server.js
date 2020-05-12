@@ -6,10 +6,13 @@ const app = express();
 const mongoose = require("mongoose");
 let Cards = require("./Model/CardModel");
 const port = 3030 || process.env.port;
+const port2 = 3031 || process.env.port;
 require("dotenv").config();
 
 app.use(cors());
 app.use(express.json());
+
+app.listen(port2, () => console.log(`Example app listening on port ${port2}!`));
 
 app.get("/", function (req, res) {
   res.send("hello world");
