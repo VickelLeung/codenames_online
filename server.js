@@ -5,15 +5,14 @@ const cors = require("cors");
 
 const mongoose = require("mongoose");
 let Cards = require("./Model/CardModel");
-const INDEX = "/index.html";
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 require("dotenv").config();
 
 const server = express().listen(PORT, () =>
   console.log(`Listening on ${PORT}`)
 );
-//.use((req, res) => res.sendFile(INDEX, { root: __dirname }))
 
+//.use((req, res) => res.send(INDEX))
 // app.use(cors());
 // app.use(express.json());
 
@@ -57,19 +56,19 @@ wss.on("connection", function connection(ws) {
 
     const sendMessage = () => {
       wss.clients.forEach(function each(client) {
-        if (client !== ws && client.readyState === WebSocket.OPEN) {
-          data.type = "chat";
-          client.send(data);
-        }
+        // if (client !== ws && client.readyState === WebSocket.OPEN) {
+        data.type = "chat";
+        client.send(data);
+        // }
       });
     };
 
     const joinChatroom = () => {
       wss.clients.forEach(function each(client) {
-        if (client !== ws && client.readyState === WebSocket.OPEN) {
-          data.type = "join";
-          client.send(data);
-        }
+        // if (client !== ws && client.readyState === WebSocket.OPEN) {
+        data.type = "join";
+        client.send(data);
+        // }
       });
     };
 
@@ -77,13 +76,13 @@ wss.on("connection", function connection(ws) {
       let getData = JSON.parse(data);
       // console.log("end turn" + getData.currentTurn);
       wss.clients.forEach(function each(client) {
-        if (client !== ws && client.readyState === WebSocket.OPEN) {
-          let sendObj = {
-            type: "endTurn",
-            currentTurn: getData.currentTurn,
-          };
-          client.send(JSON.stringify(sendObj));
-        }
+        // if (client !== ws && client.readyState === WebSocket.OPEN) {
+        let sendObj = {
+          type: "endTurn",
+          currentTurn: getData.currentTurn,
+        };
+        client.send(JSON.stringify(sendObj));
+        // }
       });
     };
 
@@ -94,15 +93,15 @@ wss.on("connection", function connection(ws) {
         sendWin("redWon");
       } else {
         wss.clients.forEach(function each(client) {
-          if (client !== ws && client.readyState === WebSocket.OPEN) {
-            console.log(getData);
+          // if (client !== ws && client.readyState === WebSocket.OPEN) {
+          // console.log(getData);
 
-            let sendObj = {
-              type: "redScore",
-              redScore: getData.redScore - 1,
-            };
-            client.send(JSON.stringify(sendObj));
-          }
+          let sendObj = {
+            type: "redScore",
+            redScore: getData.redScore - 1,
+          };
+          client.send(JSON.stringify(sendObj));
+          // }
         });
       }
     };
@@ -113,25 +112,25 @@ wss.on("connection", function connection(ws) {
         sendWin("blueWon");
       } else {
         wss.clients.forEach(function each(client) {
-          if (client !== ws && client.readyState === WebSocket.OPEN) {
-            let sendObj = {
-              type: "blueScore",
-              blueScore: getData.blueScore - 1,
-            };
-            client.send(JSON.stringify(sendObj));
-          }
+          // if (client !== ws && client.readyState === WebSocket.OPEN) {
+          let sendObj = {
+            type: "blueScore",
+            blueScore: getData.blueScore - 1,
+          };
+          client.send(JSON.stringify(sendObj));
+          // }
         });
       }
     };
 
     const sendWin = (x) => {
       wss.clients.forEach(function each(client) {
-        if (client !== ws && client.readyState === WebSocket.OPEN) {
-          let sendObj = {
-            type: x,
-          };
-          client.send(JSON.stringify(sendObj));
-        }
+        // if (client !== ws && client.readyState === WebSocket.OPEN) {
+        let sendObj = {
+          type: x,
+        };
+        client.send(JSON.stringify(sendObj));
+        // }
       });
     };
 
@@ -187,13 +186,13 @@ wss.on("connection", function connection(ws) {
         }
         console.log(getData.player);
         wss.clients.forEach(function each(client) {
-          if (client !== ws && client.readyState === WebSocket.OPEN) {
-            let sendObj = {
-              type: returnType,
-              name: getData.player,
-            };
-            client.send(JSON.stringify(sendObj));
-          }
+          // if (client !== ws && client.readyState === WebSocket.OPEN) {
+          let sendObj = {
+            type: returnType,
+            name: getData.player,
+          };
+          client.send(JSON.stringify(sendObj));
+          // }
         });
       }
     };
