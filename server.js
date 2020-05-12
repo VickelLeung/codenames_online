@@ -1,13 +1,17 @@
 const express = require("express");
 const cors = require("cors");
 
-const app = express();
+// const app = express();
 
 const mongoose = require("mongoose");
 let Cards = require("./Model/CardModel");
-const port = 3030 || process.env.port;
-// const port2 = 3031 || process.env.port;
+const INDEX = "/index.html";
+const PORT = process.env.PORT || 3000;
 require("dotenv").config();
+
+const server = express()
+  .use((req, res) => res.sendFile(INDEX, { root: __dirname }))
+  .listen(PORT, () => console.log(`Listening on ${PORT}`));
 
 // app.use(cors());
 // app.use(express.json());
@@ -36,9 +40,11 @@ connection.once("open", () => {
   console.log("connection established");
 });
 
-const WebSocket = require("ws");
+// const WebSocket = require("ws");
+const { Server } = require("ws");
+const wss = new Server({ server });
 
-const wss = new WebSocket.Server({ port: port });
+// const wss = new WebSocket.Server({ port: port });
 
 wss.on("connection", function connection(ws) {
   ws.room = [];
