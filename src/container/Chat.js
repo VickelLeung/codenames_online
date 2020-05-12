@@ -21,7 +21,7 @@ class Chat extends Component {
     isChatLoaded: false,
   };
 
-  ws = new WebSocket(URL);
+  //ws = new WebSocket(URL);
 
   componentDidMount() {
     // this.ws.onopen = () => {
@@ -29,29 +29,26 @@ class Chat extends Component {
     //   console.log("connected");
     //   this.props.setConnection(true);
     // };
-
-    this.ws.onmessage = (evt) => {
-      // on receiving a message, add it to the list of messages
-      // const message = JSON.parse(evt.data);
-      const message = JSON.parse(evt.data);
-      console.log(message.type);
-
-      switch (message.type) {
-        case "chat":
-          this.addMessage(message);
-          break;
-        case "join":
-          this.addMessage(message);
-          break;
-        case "spymaster":
-          this.addMessage(message);
-          break;
-        case "player":
-          this.addMessage(message);
-          break;
-      }
-    };
-
+    // this.ws.onmessage = (evt) => {
+    //   // on receiving a message, add it to the list of messages
+    //   // const message = JSON.parse(evt.data);
+    //   const message = JSON.parse(evt.data);
+    //   console.log(message.type);
+    //   switch (message.type) {
+    //     case "chat":
+    //       this.addMessage(message);
+    //       break;
+    //     case "join":
+    //       this.addMessage(message);
+    //       break;
+    //     case "spymaster":
+    //       this.addMessage(message);
+    //       break;
+    //     case "player":
+    //       this.addMessage(message);
+    //       break;
+    //   }
+    // };
     // this.ws.onclose = () => {
     //   console.log("disconnected");
     //   // automatically try to reconnect on connection loss
@@ -80,7 +77,7 @@ class Chat extends Component {
       name: this.state.username,
       message: messageString,
     };
-    this.ws.send(JSON.stringify(message));
+    //this.ws.send(JSON.stringify(message));
     this.addMessage(message);
   };
 
@@ -90,7 +87,7 @@ class Chat extends Component {
         type: "join",
         name: this.state.username,
       };
-      this.ws.send(JSON.stringify(message));
+      //this.ws.send(JSON.stringify(message));
       this.props.setUser(this.state.username);
     } else {
       alert("error, enter fill your username");

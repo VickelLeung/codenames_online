@@ -12,9 +12,9 @@ const URL = "ws:https://thecodenamebackend.herokuapp.com/";
 
 
 class Cards extends PureComponent {
-  ws = new WebSocket(URL);
+ // ws = new WebSocket(URL);
   componentDidMount = () => {
-    this.ws.onmessage = (evt) => {
+    //this.ws.onmessage = (evt) => {
       // on receiving a message, add it to the list of messages
 
       const message = JSON.parse(evt.data);
@@ -57,7 +57,7 @@ class Cards extends PureComponent {
       type: "endTurn",
       currentTurn: turn,
     };
-    this.ws.send(JSON.stringify(message));
+    //this.ws.send(JSON.stringify(message));
     console.log("end");
   };
 
@@ -99,7 +99,7 @@ class Cards extends PureComponent {
         this.endTurn();
       }
 
-      this.ws.send(JSON.stringify(message));
+     // this.ws.send(JSON.stringify(message));
     }
 
     this.props.onClick(this.props.children);

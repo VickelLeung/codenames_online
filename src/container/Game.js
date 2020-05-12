@@ -16,36 +16,36 @@ class Game extends PureComponent {
 
   state = { userInfo: {} };
   componentDidMount = () => {
-    this.ws.onopen = () => {
-      // on connecting, do nothing but log it to the console
-      console.log("connected");
-      this.props.setConnection(true);
-      const message = {
-        type: "getCards",
-      };
-      this.ws.send(JSON.stringify(message));
-    };
+    // this.ws.onopen = () => {
+    //   // on connecting, do nothing but log it to the console
+    //   console.log("connected");
+    //   this.props.setConnection(true);
+    //   const message = {
+    //     type: "getCards",
+    //   };
+    //   this.ws.send(JSON.stringify(message));
+    // };
 
     this.setState({ userInfo: this.props.details });
 
-    this.ws.onmessage = (evt) => {
-      // on receiving a message, add it to the list of messages
-      // const message = JSON.parse(evt.data);
-      const message = JSON.parse(evt.data);
-      console.log(message);
-      switch (message.type) {
-        case "endTurn":
-          this.props.setTurn(message.currentTurn);
-          break;
-        case "redWon":
-          alert("Red won the game");
-          break;
-        case "blueWon":
-          alert("blue won the game");
-          break;
-      }
-      // this.addMessage(message);
-    };
+    // this.ws.onmessage = (evt) => {
+    //   // on receiving a message, add it to the list of messages
+    //   // const message = JSON.parse(evt.data);
+    //   const message = JSON.parse(evt.data);
+    //   console.log(message);
+    //   switch (message.type) {
+    //     case "endTurn":
+    //       this.props.setTurn(message.currentTurn);
+    //       break;
+    //     case "redWon":
+    //       alert("Red won the game");
+    //       break;
+    //     case "blueWon":
+    //       alert("blue won the game");
+    //       break;
+    //   }
+    //   // this.addMessage(message);
+    // };
 
     // this.ws.onclose = () => {
     //   console.log("disconnected");
@@ -70,14 +70,14 @@ class Game extends PureComponent {
       type: "endTurn",
       currentTurn: turn,
     };
-    this.ws.send(JSON.stringify(message));
+    //this.ws.send(JSON.stringify(message));
   };
 
   nextGame = () => {
     const message = {
       type: "nextGame",
     };
-    this.ws.send(JSON.stringify(message));
+    //this.ws.send(JSON.stringify(message));
   };
 
   alternateSpy = (value) => {
@@ -88,7 +88,7 @@ class Game extends PureComponent {
       player: this.props.username,
       isActive: value,
     };
-    this.ws.send(JSON.stringify(message));
+    //.send(JSON.stringify(message));
 
     this.props.alternateSpymaster(value);
   };

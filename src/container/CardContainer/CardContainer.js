@@ -7,7 +7,7 @@ import styled from "styled-components";
 const URL = "ws:https://thecodenamebackend.herokuapp.com/";
 
 class CardContainer extends PureComponent {
-  ws = new WebSocket(URL);
+  //ws = new WebSocket(URL);
   state = {
     cards: [],
   };
@@ -18,7 +18,7 @@ class CardContainer extends PureComponent {
       type: "updateCards",
       name: data,
     };
-    this.ws.send(JSON.stringify(message));
+    //this.ws.send(JSON.stringify(message));
   };
 
   componentDidMount = () => {
@@ -29,16 +29,16 @@ class CardContainer extends PureComponent {
     // };
     // this.ws.send(JSON.stringify(message));
 
-    this.ws.onmessage = (evt) => {
-      // on receiving a message, add it to the list of messages
-      const message = JSON.parse(evt.data);
-      console.log(message);
-      switch (message.type) {
-        case "getCards":
-          this.addCards(message.cards);
-          break;
-      }
-    };
+    // this.ws.onmessage = (evt) => {
+    //   // on receiving a message, add it to the list of messages
+    //   const message = JSON.parse(evt.data);
+    //   console.log(message);
+    //   switch (message.type) {
+    //     case "getCards":
+    //       this.addCards(message.cards);
+    //       break;
+    //   }
+    // };
   };
 
   addCards = (card) => {

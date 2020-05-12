@@ -18,31 +18,28 @@ class Setting extends PureComponent {
   ws = new WebSocket(URL);
 
   componentDidMount() {
-    this.ws.onopen = () => {
-      // on connecting, do nothing but log it to the console
-      console.log("connected");
-    };
-
-    this.ws.onmessage = (evt) => {
-      // on receiving a message, add it to the list of messages
-      const message = JSON.parse(evt.data);
-      console.log(message);
-      // let obj = JSON.parse(message);
-      console.log(message.username);
-      this.setState({ displayUser: message.username });
-
-      //this.addMessage(message);
-    };
-
-    this.ws.onclose = () => {
-      console.log("disconnected");
-      // automatically try to reconnect on connection loss
-      this.setState({
-        ws: new WebSocket(URL),
-        name: "john",
-        //this.props.details.username,
-      });
-    };
+    // this.ws.onopen = () => {
+    //   // on connecting, do nothing but log it to the console
+    //   console.log("connected");
+    // };
+    // this.ws.onmessage = (evt) => {
+    //   // on receiving a message, add it to the list of messages
+    //   const message = JSON.parse(evt.data);
+    //   console.log(message);
+    //   // let obj = JSON.parse(message);
+    //   console.log(message.username);
+    //   this.setState({ displayUser: message.username });
+    //   //this.addMessage(message);
+    // };
+    // this.ws.onclose = () => {
+    //   console.log("disconnected");
+    //   // automatically try to reconnect on connection loss
+    //   this.setState({
+    //     ws: new WebSocket(URL),
+    //     name: "john",
+    //     //this.props.details.username,
+    //   });
+    // };
   }
 
   addMessage = (message) => {
