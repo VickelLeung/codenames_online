@@ -11,7 +11,7 @@ import styled from "styled-components";
 import { setJoined, setUser } from "../action/action";
 import Radio from "@material-ui/core/Radio";
 
-const URL = "ws://thecodenamebackend.herokuapp.com/";
+const URL = "wss://thecodenamebackend.herokuapp.com/";
 
 class Chat extends Component {
   state = {

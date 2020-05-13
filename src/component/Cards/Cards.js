@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import { setTurn, setRedScore, setBlueScore } from "../../action/action";
 
-const URL = "ws://thecodenamebackend.herokuapp.com/";
+const URL = "wss://thecodenamebackend.herokuapp.com/";
 
 class Cards extends PureComponent {
   ws = new WebSocket(URL);

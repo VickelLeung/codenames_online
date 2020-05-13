@@ -4,7 +4,7 @@ import Cards from "../../component/Cards/Cards";
 
 import styled from "styled-components";
 
-const URL = "ws://thecodenamebackend.herokuapp.com/";
+const URL = "wss://thecodenamebackend.herokuapp.com/";
 
 class CardContainer extends PureComponent {
   ws = new WebSocket(URL);

@@ -9,7 +9,7 @@ import { Scoreboard } from "../component/Scoreboard/Scoreboard";
 import { CardContainer } from "../container/CardContainer/CardContainer";
 import { setConnection } from "../action/action";
 
-const URL = "ws://thecodenamebackend.herokuapp.com/";
+const URL = "wss://thecodenamebackend.herokuapp.com/";
 
 class Game extends PureComponent {
   ws = new WebSocket(URL);
