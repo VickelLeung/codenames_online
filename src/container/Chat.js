@@ -8,10 +8,10 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Axios from "axios";
 import styled from "styled-components";
-import { setConnection, setUser } from "../action/action";
+import { setJoined, setUser } from "../action/action";
 import Radio from "@material-ui/core/Radio";
 
-const URL = "ws:https://thecodenamebackend.herokuapp.com/";
+const URL = "ws://thecodenamebackend.herokuapp.com/";
 
 class Chat extends Component {
   state = {
@@ -20,6 +20,7 @@ class Chat extends Component {
     userJoined: "",
     messages: [],
     isChatLoaded: false,
+    checked: "red",
   };
 
   ws = new WebSocket(URL);
@@ -82,7 +83,7 @@ class Chat extends Component {
       message: messageString,
     };
     this.ws.send(JSON.stringify(message));
-    this.addMessage(message);
+    // this.addMessage(message);
   };
 
   joinChat = () => {
@@ -90,17 +91,19 @@ class Chat extends Component {
       const message = {
         type: "join",
         name: this.state.username,
+        color: this.state.checked,
       };
       this.ws.send(JSON.stringify(message));
+      this.props.setJoined(true);
       this.props.setUser(this.state.username);
     } else {
-      alert("error, enter fill your username");
+      alert("Error,  fill your username");
     }
   };
 
-  render() {
+  displayJoin = () => {
     return (
-      <div>
+      <JoinWrapper>
         <TextField
           label="Username"
           onChange={(e) => {
@@ -108,13 +111,40 @@ class Chat extends Component {
           }}
           value={this.state.username}
         />
-        <Radio />
-        <Radio />
-        <JoinRoom onClick={this.joinChat}>Join</JoinRoom>
+        <p>Choose a team color</p>
+        <RadioContainer>
+          <Radio
+            style={{ color: "red" }}
+            checked={this.state.checked == "red"}
+            onClick={() => {
+              this.setState({ checked: "red" });
+            }}
+          />
+          <Radio
+            style={{ color: "blue" }}
+            checked={this.state.checked == "blue"}
+            onClick={() => {
+              this.setState({ checked: "blue" });
+            }}
+          />
+        </RadioContainer>
+        <JoinRoom variant="outlined" onClick={this.joinChat}>
+          Join
+        </JoinRoom>
+      </JoinWrapper>
+    );
+  };
+
+  render() {
+    return (
+      <div>
+        <JoinContainer>
+          {this.props.isJoined ? null : this.displayJoin()}
+        </JoinContainer>
         <Element
           style={{
             position: "relative",
-            height: "50vh",
+            height: "60vh",
             width: "100%",
             overflow: "scroll",
           }}
@@ -131,7 +161,6 @@ class Chat extends Component {
             />
           ))}
         </Element>
-
         <ChatInput
           ws={this.ws}
           onSubmitMessage={(messageString) => this.submitMessage(messageString)}
@@ -142,13 +171,13 @@ class Chat extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return { details: state.userDetail };
+  return { details: state.userDetail, isJoined: state.isJoined };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setConnection: (info) => {
-      dispatch(setConnection(info));
+    setJoined: (info) => {
+      dispatch(setJoined(info));
     },
     setUser: (info) => {
       dispatch(setUser(info));
@@ -159,3 +188,22 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(mapStateToProps, mapDispatchToProps)(Chat);
 
 const JoinRoom = styled(Button)``;
+
+const JoinWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const RadioContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`;
+
+const JoinContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`;

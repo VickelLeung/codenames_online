@@ -4,7 +4,7 @@ import Cards from "../../component/Cards/Cards";
 
 import styled from "styled-components";
 
-const URL = "ws:https://thecodenamebackend.herokuapp.com/";
+const URL = "ws://thecodenamebackend.herokuapp.com/";
 
 class CardContainer extends PureComponent {
   ws = new WebSocket(URL);
@@ -24,13 +24,19 @@ class CardContainer extends PureComponent {
   componentDidMount = () => {
     console.log("Card loaded");
 
-    // const message = {
-    //   type: "generateCards",
-    // };
-    // this.ws.send(JSON.stringify(message));
+    this.ws.onopen = () => {
+      // on connecting, do nothing but log it to the console
+      console.log("connected");
+      // this.props.setConnection(true);
+      const message = {
+        type: "getCards",
+      };
+      this.ws.send(JSON.stringify(message));
+    };
 
     this.ws.onmessage = (evt) => {
       // on receiving a message, add it to the list of messages
+      console.log("testing");
       const message = JSON.parse(evt.data);
       console.log(message);
       switch (message.type) {

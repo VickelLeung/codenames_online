@@ -8,8 +8,7 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import { setTurn, setRedScore, setBlueScore } from "../../action/action";
 
-const URL = "ws:https://thecodenamebackend.herokuapp.com/";
-
+const URL = "ws://thecodenamebackend.herokuapp.com/";
 
 class Cards extends PureComponent {
   ws = new WebSocket(URL);
@@ -118,7 +117,7 @@ class Cards extends PureComponent {
 
   render() {
     return (
-      <Card
+      <CardItem
         style={this.props.isChecked ? this.displaySelect : this.displayPlayer}
       >
         <CardActionArea
@@ -133,7 +132,7 @@ class Cards extends PureComponent {
             </Word>
           </CardContent>
         </CardActionArea>
-      </Card>
+      </CardItem>
     );
   }
 }
@@ -166,4 +165,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(Cards);
 
 const Word = styled.p`
   font-weight: bold;
+`;
+
+const CardItem = styled(Card)`
+  transition: background-color 2000ms linear;
 `;

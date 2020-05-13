@@ -7,6 +7,7 @@ const initialState = {
   blueScore: 10,
   username: "",
   isConnected: false,
+  isJoined: false,
 };
 
 export default function reducer(state = initialState, action) {
@@ -27,6 +28,8 @@ export default function reducer(state = initialState, action) {
       return { ...state, isDeath: true };
     case "SET_CONNECTION":
       return { ...state, isConnected: action.payload };
+    case "SET_JOINED":
+      return { ...state, isJoined: action.payload };
     default:
       return state;
   }

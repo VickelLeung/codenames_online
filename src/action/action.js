@@ -35,3 +35,8 @@ export const setConnection = (userObj) => ({
   type: "SET_CONNECTION",
   payload: userObj,
 });
+
+export const setJoined = (userObj) => ({
+  type: "SET_JOINED",
+  payload: userObj,
+});

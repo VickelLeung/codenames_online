@@ -2,14 +2,14 @@ import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import Chat from "../container/Chat";
-import Countdown from "react-countdown";
+//import Countdown from "react-countdown";
 import Button from "@material-ui/core/Button";
 import { setTurn, alternateSpymaster } from "../action/action";
 import { Scoreboard } from "../component/Scoreboard/Scoreboard";
 import { CardContainer } from "../container/CardContainer/CardContainer";
 import { setConnection } from "../action/action";
 
-const URL = "ws:https://thecodenamebackend.herokuapp.com/";
+const URL = "ws://thecodenamebackend.herokuapp.com/";
 
 class Game extends PureComponent {
   ws = new WebSocket(URL);
@@ -20,10 +20,10 @@ class Game extends PureComponent {
       // on connecting, do nothing but log it to the console
       console.log("connected");
       this.props.setConnection(true);
-      const message = {
-        type: "getCards",
-      };
-      this.ws.send(JSON.stringify(message));
+      // const message = {
+      //   type: "getCards",
+      // };
+      // this.ws.send(JSON.stringify(message));
     };
 
     this.setState({ userInfo: this.props.details });
@@ -96,43 +96,58 @@ class Game extends PureComponent {
   render() {
     return (
       <Wrapper>
-        <h1>Codenames</h1>
+        <MainTitle>The Codenames</MainTitle>
 
-        <ScoreContainer>
-          <Scoreboard name="BLUE" Number={this.props.blueScore} />
-          <Scoreboard name="RED" Number={this.props.redScore} />
-        </ScoreContainer>
         {/* <p>spy:{this.props.spy ? <p>good</p> : <p>bad</p>}</p> */}
         <Container>
           <GameContainer>
-            <PlayerMode>
-              <EndBtn
-                disabled={!this.props.spy}
-                onClick={() => this.alternateSpy(false)}
-              >
-                Player
-              </EndBtn>
-              <EndBtn
-                disabled={this.props.spy}
-                onClick={() => this.alternateSpy(true)}
-              >
-                Spymaster
-              </EndBtn>
-            </PlayerMode>
+            <ScoreHolder>
+              <Title>Scoreboard</Title>
+              <ScoreContainer>
+                <Scoreboard name="BLUE" Number={this.props.blueScore} />
+                <Scoreboard name="RED" Number={this.props.redScore} />
+              </ScoreContainer>
+            </ScoreHolder>
+
             {this.props.currentTurn == "RED" ? (
               <RedTurn>It's Red turn</RedTurn>
             ) : (
               <BlueTurn>It's Blue turn</BlueTurn>
             )}
+            <UserButton>
+              <PlayerMode>
+                <EndBtn
+                  disabled={!this.props.spy}
+                  onClick={() => this.alternateSpy(false)}
+                >
+                  Player
+                </EndBtn>
+                <EndBtn
+                  disabled={this.props.spy}
+                  onClick={() => this.alternateSpy(true)}
+                >
+                  Spymaster
+                </EndBtn>
+              </PlayerMode>
+
+              <EndBtn
+                style={{ margin: "2% 0" }}
+                variant="outlined"
+                onClick={this.endTurn}
+              >
+                End turn
+              </EndBtn>
+            </UserButton>
+
             <CardContainer />
+            <EndBtn variant="outlined" onClick={this.nextGame}>
+              Next game
+            </EndBtn>
           </GameContainer>
           <ChatContainer>
             <Chat />
           </ChatContainer>
         </Container>
-
-        <EndBtn onClick={this.endTurn}>End turn</EndBtn>
-        <EndBtn onClick={this.nextGame}>Next game</EndBtn>
       </Wrapper>
     );
   }
@@ -190,6 +205,7 @@ const ChatContainer = styled.div`
 `;
 
 const RedTurn = styled.div`
+  font-size: 1.5em;
   text-align: center;
   color: black;
   width: 50%;
@@ -203,6 +219,7 @@ const RedTurn = styled.div`
 `;
 
 const BlueTurn = styled.div`
+  font-size: 1.5em;
   color: black;
   width: 50%;
   background: linear-gradient(
@@ -217,13 +234,40 @@ const BlueTurn = styled.div`
 const EndBtn = styled(Button)``;
 
 const ScoreContainer = styled.div`
+  font-size: 1.5em;
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;
+  align-items: left;
 `;
 
 const PlayerMode = styled.div`
   display: flex;
   flex-direction: row;
+`;
+
+const MainTitle = styled.div`
+  margin: 2% 0;
+  font-size: 1.6em;
+  font-family: Chalkduster;
+`;
+
+const Title = styled.div`
+  font-size: 1.5em;
+`;
+
+const ScoreHolder = styled.div`
+  width: 50%;
+`;
+
+const InfoContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const UserButton = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 50%;
+  justify-content: space-between;
 `;
