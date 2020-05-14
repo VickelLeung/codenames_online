@@ -40,3 +40,8 @@ export const setJoined = (userObj) => ({
   type: "SET_JOINED",
   payload: userObj,
 });
+
+export const setUserColor = (userObj) => ({
+  type: "SET_USERCOLOR",
+  payload: userObj,
+});

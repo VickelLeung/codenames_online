@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-// import TextField from "@material-ui/core/TextField";
+import { connect } from "react-redux";
+import TextField from "@material-ui/core/TextField";
 // import SendIcon from "@material-ui/icons/Send";
 import styled from "styled-components";
+import Button from "@material-ui/core/Button";
 
 class ChatInput extends Component {
   static propTypes = {
@@ -24,14 +26,19 @@ class ChatInput extends Component {
           }}
         >
           <InputContainer>
-            <Input
+            <TextField
+              style={{ height: "100%", width: "80%", color: "black" }}
+              rows={2}
+              disabled={!this.props.isJoined}
               type="text"
               placeholder={"Enter message..."}
               value={this.state.message}
               onChange={(e) => this.setState({ message: e.target.value })}
             />
 
-            <Send type="submit"></Send>
+            <Button disabled={!this.props.isJoined} type="submit">
+              Send
+            </Button>
           </InputContainer>
         </form>
       </Wrapper>
@@ -39,19 +46,21 @@ class ChatInput extends Component {
   }
 }
 
-export default ChatInput;
+const mapStateToProps = (state) => {
+  return {
+    details: state.userDetail,
+    isJoined: state.isJoined,
+    getColor: state.userColor,
+  };
+};
 
-const Wrapper = styled.div`
-  position: absolute;
-  bottom: 0;
-`;
+export default connect(mapStateToProps, null)(ChatInput);
 
-const Input = styled.input`
-  height: 100%;
-  width: 80%;
-`;
+const Wrapper = styled.div``;
+
 const Send = styled.input`
   width: 20%;
+  padding: 24% 50%;
 `;
 
 const InputContainer = styled.div`

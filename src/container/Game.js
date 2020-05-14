@@ -93,13 +93,21 @@ class Game extends PureComponent {
     this.props.alternateSpymaster(value);
   };
 
+  displayInfo = () => {
+    return (
+      <Info>
+        <h1>Please join the chatroom before starting the game!</h1>
+      </Info>
+    );
+  };
+
   render() {
     return (
       <Wrapper>
         <MainTitle>The Codenames</MainTitle>
-
-        {/* <p>spy:{this.props.spy ? <p>good</p> : <p>bad</p>}</p> */}
         <Container>
+          {this.props.isJoined ? null : this.displayInfo()}
+
           <GameContainer>
             <ScoreHolder>
               <Title>Scoreboard</Title>
@@ -145,6 +153,7 @@ class Game extends PureComponent {
             </EndBtn>
           </GameContainer>
           <ChatContainer>
+            <ChatTitle>Chatroom</ChatTitle>
             <Chat />
           </ChatContainer>
         </Container>
@@ -161,6 +170,7 @@ const mapStateToProps = (state) => {
     currentTurn: state.currentTurn,
     details: state.userDetail,
     spy: state.isSpymaster,
+    isJoined: state.isJoined,
   };
 };
 
@@ -185,6 +195,7 @@ const Wrapper = styled.div`
 `;
 
 const Container = styled.div`
+  height: 90vh;
   display: flex;
   flex-direction: row;
 `;
@@ -200,8 +211,8 @@ const GameContainer = styled.div`
 
 const ChatContainer = styled.div`
   text-align: center;
-  border: 1px solid black;
   width: 30vw;
+  margin: 0 2%;
 `;
 
 const RedTurn = styled.div`
@@ -270,4 +281,32 @@ const UserButton = styled.div`
   flex-direction: row;
   width: 50%;
   justify-content: space-between;
+`;
+
+const Info = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 85vh;
+  width: 65vw;
+  margin: 1%;
+  border: 1px solid black;
+  border-radius: 20px;
+  position: absolute;
+
+  color: white;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 2;
+`;
+
+const ChatTitle = styled.div`
+  font-size: 1.5em;
+  color: white;
+  background: linear-gradient(
+    0deg,
+    rgba(124, 123, 123, 0) 0%,
+    rgba(0, 0, 0, 0.5872724089635855) 0%,
+    rgba(0, 0, 0, 1) 100%,
+    rgba(0, 0, 0, 0) 100%
+  );
 `;

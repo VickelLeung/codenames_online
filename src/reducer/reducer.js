@@ -8,6 +8,7 @@ const initialState = {
   username: "",
   isConnected: false,
   isJoined: false,
+  userColor: "",
 };
 
 export default function reducer(state = initialState, action) {
@@ -30,6 +31,8 @@ export default function reducer(state = initialState, action) {
       return { ...state, isConnected: action.payload };
     case "SET_JOINED":
       return { ...state, isJoined: action.payload };
+    case "SET_USERCOLOR":
+      return { ...state, userColor: action.payload };
     default:
       return state;
   }

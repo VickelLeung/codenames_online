@@ -3,13 +3,15 @@ import ChatInput from "../component/ChatInput";
 import ChatMessage from "../component/ChatMessage";
 import { connect } from "react-redux";
 // import UserJoined from "../component/UserJoined";
-import { Element } from "react-scroll";
+import { Element, animateScroll } from "react-scroll";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Axios from "axios";
 import styled from "styled-components";
-import { setJoined, setUser } from "../action/action";
+import { setJoined, setUser, setUserColor } from "../action/action";
 import Radio from "@material-ui/core/Radio";
+
+import ScrollArea from "react-scrollbar";
 
 const URL = "wss://thecodenamebackend.herokuapp.com/";
 
@@ -73,6 +75,7 @@ class Chat extends Component {
     });
     // this.setState((state) => ({ messages: [message, ...this.state.messages] }));
     console.log(this.state.message);
+    this.scrollToBottom();
   };
 
   submitMessage = (messageString) => {
@@ -81,6 +84,7 @@ class Chat extends Component {
       type: "chat",
       name: this.state.username,
       message: messageString,
+      color: this.props.getColor,
     };
     this.ws.send(JSON.stringify(message));
     // this.addMessage(message);
@@ -94,6 +98,7 @@ class Chat extends Component {
         color: this.state.checked,
       };
       this.ws.send(JSON.stringify(message));
+      this.props.setUserColor(this.state.checked);
       this.props.setJoined(true);
       this.props.setUser(this.state.username);
     } else {
@@ -104,6 +109,7 @@ class Chat extends Component {
   displayJoin = () => {
     return (
       <JoinWrapper>
+        <h2 style={{ textDecoration: "underline" }}>Join chatroom</h2>
         <TextField
           label="Username"
           onChange={(e) => {
@@ -134,44 +140,61 @@ class Chat extends Component {
       </JoinWrapper>
     );
   };
+  displayChat = () => {
+    return (
+      <Element
+        id="message"
+        style={{
+          position: "relative",
+          height: "50vh",
+          width: "100%",
+          overflow: "scroll",
+          margin: "3% 5%",
+        }}
+      >
+        {this.state.messages.map((message, index) => (
+          <ChatMessage
+            onClick={this.scrollToBottom()}
+            key={index}
+            type={message.type}
+            message={message.message}
+            name={message.name}
+            color={message.color}
+          />
+        ))}
+      </Element>
+    );
+  };
+
+  scrollToBottom = () => {
+    animateScroll.scrollToBottom({
+      containerId: "message",
+    });
+  };
 
   render() {
     return (
-      <div>
+      <Wrapper>
         <JoinContainer>
-          {this.props.isJoined ? null : this.displayJoin()}
+          {this.props.isJoined ? this.displayChat() : this.displayJoin()}
         </JoinContainer>
-        <Element
-          style={{
-            position: "relative",
-            height: "60vh",
-            width: "100%",
-            overflow: "scroll",
-          }}
-        >
-          {/* <p>display history</p> */}
-          {/* <UserJoined name={this.state.userJoined} /> */}
 
-          {this.state.messages.map((message, index) => (
-            <ChatMessage
-              key={index}
-              type={message.type}
-              message={message.message}
-              name={message.name}
-            />
-          ))}
-        </Element>
+        <Bar />
         <ChatInput
           ws={this.ws}
           onSubmitMessage={(messageString) => this.submitMessage(messageString)}
         />
-      </div>
+      </Wrapper>
     );
   }
 }
 
 const mapStateToProps = (state) => {
-  return { details: state.userDetail, isJoined: state.isJoined };
+  return {
+    details: state.userDetail,
+    isJoined: state.isJoined,
+    getColor: state.userColor,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -182,14 +205,24 @@ const mapDispatchToProps = (dispatch) => {
     setUser: (info) => {
       dispatch(setUser(info));
     },
+    setUserColor: (info) => {
+      dispatch(setUserColor(info));
+    },
   };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chat);
 
+const Wrapper = styled.div`
+  height: 40vh;
+`;
+
 const JoinRoom = styled(Button)``;
 
 const JoinWrapper = styled.div`
+  padding: 4%;
+  margin: 5%;
+  border: 1px solid black;
   display: flex;
   flex-direction: column;
 `;
@@ -206,4 +239,11 @@ const JoinContainer = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  border-right: 1px solid black;
+  border-left: 1px solid black;
+`;
+
+const Bar = styled.div`
+  border-bottom: 4px solid black;
+  margin-bottom: 1% 0;
 `;
