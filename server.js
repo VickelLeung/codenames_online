@@ -103,7 +103,7 @@ wss.on("connection", function connection(ws) {
         sendWin("redWon");
       } else {
         console.log(redScoreVal);
-        redScoreVal - 1;
+        redScoreVal--;
         console.log(redScoreVal);
         getRedScore();
       }
@@ -128,7 +128,7 @@ wss.on("connection", function connection(ws) {
         sendWin("blueWon");
       } else {
         console.log(blueScoreVal);
-        blueScoreVal - 1;
+        blueScoreVal--;
         console.log(blueScoreVal);
         getBlueScore();
       }
