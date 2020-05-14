@@ -1,46 +1,56 @@
-import React from "react";
+import React, { PureComponent } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import bgImg from "../assets/images/codenames.jpeg";
+import Modal from "../container/Modal/Modal";
 
-const Homepage = () => {
-  return (
-    <Wrapper>
-      <MainContainer>
-        <Container>
-          <Title>The Codenames</Title>
-          <Instruction>
-            Welcome to Codenames, this is a very simple games of codenames. If
-            you are not very familiar with the game, you can refer to how to
-            play for more information.
-          </Instruction>
-          <ButtonContainer>
-            <Button variant="contained">How to play</Button>
-            <StartButton to="/game">
-              <Button variant="contained">Play now</Button>
-            </StartButton>
-          </ButtonContainer>
-        </Container>
-      </MainContainer>
-      <Footer>
-        <p>
-          This game was made possible due to coronavirus, follow me throught
-          github
-          <a
-            style={{ textDecoration: "none" }}
-            href="https://github.com/VickelLeung"
-          >
-            <Button variant="outlined" style={{ color: "white" }}>
-              @click here
-            </Button>
-          </a>
-          or buy me a coffee by donating here
-        </p>
-      </Footer>
-    </Wrapper>
-  );
-};
+class Homepage extends PureComponent {
+  state = { isModal: false };
+  render() {
+    return (
+      <Wrapper>
+        <MainContainer>
+          <Container>
+            <Title>The Codenames</Title>
+            <Instruction>
+              Welcome to Codenames, this is a very simple games of codenames. If
+              you are not very familiar with the game, you can refer to how to
+              play for more information.
+            </Instruction>
+            <ButtonContainer>
+              <Button
+                onClick={() => this.setState({ isModal: !this.state.isModal })}
+                variant="contained"
+              >
+                How to play
+              </Button>
+              <StartButton to="/game">
+                <Button variant="contained">Play now</Button>
+              </StartButton>
+            </ButtonContainer>
+          </Container>
+        </MainContainer>
+        <Footer>
+          <p>
+            This game was made possible due to coronavirus, follow me throught
+            github
+            <a
+              style={{ textDecoration: "none" }}
+              href="https://github.com/VickelLeung"
+            >
+              <Button variant="outlined" style={{ color: "white" }}>
+                @click here
+              </Button>
+            </a>
+            or buy me a coffee by donating here
+          </p>
+        </Footer>
+        <Modal isModal={this.state.isModal} />
+      </Wrapper>
+    );
+  }
+}
 
 export { Homepage };
 
@@ -73,6 +83,10 @@ const ButtonContainer = styled.div`
   flex-direction: row;
   width: 25%;
   justify-content: space-between;
+
+  @media screen and (max-width: 420px) {
+    width: 70vw;
+  }
 `;
 
 const Title = styled.div`
@@ -90,6 +104,10 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   color: white;
+
+  @media screen and (max-width: 420px) {
+    width: 80vw;
+  }
 `;
 
 const Footer = styled.div`

@@ -124,7 +124,7 @@ class Game extends PureComponent {
         <MainTitle>The Codenames</MainTitle>
         <Container>
           {this.props.isJoined ? null : this.displayInfo()}
-
+          <HorizontalBar />
           <GameContainer>
             <ScoreHolder>
               <Title>Scoreboard</Title>
@@ -165,10 +165,16 @@ class Game extends PureComponent {
             </UserButton>
 
             <CardContainer />
-            <EndBtn variant="outlined" onClick={this.nextGame}>
+            <EndBtn
+              style={{ margin: "1% 0" }}
+              variant="outlined"
+              onClick={this.nextGame}
+            >
               Next game
             </EndBtn>
           </GameContainer>
+          <HorizontalBar />
+
           <ChatContainer>
             <ChatTitle>Chatroom</ChatTitle>
             <Chat />
@@ -221,6 +227,10 @@ const Container = styled.div`
   height: 90vh;
   display: flex;
   flex-direction: row;
+
+  @media screen and (max-width: 420px) {
+    flex-direction: column;
+  }
 `;
 
 const GameContainer = styled.div`
@@ -230,12 +240,19 @@ const GameContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  @media screen and (max-width: 420px) {
+    width: 100vw;
+  }
 `;
 
 const ChatContainer = styled.div`
   text-align: center;
   width: 30vw;
-  margin: 0 2%;
+  margin: 5% 2%;
+  @media screen and (max-width: 420px) {
+    flex-direction: column;
+    width: 90vw;
+  }
 `;
 
 const RedTurn = styled.div`
@@ -281,9 +298,13 @@ const PlayerMode = styled.div`
 `;
 
 const MainTitle = styled.div`
-  margin: 2% 0;
+  margin-bottom: 2%;
+  padding: 2%;
   font-size: 1.6em;
   font-family: Chalkduster;
+  border-bottom: 2px solid black;
+  background: black;
+  color: white;
 `;
 
 const Title = styled.div`
@@ -320,6 +341,11 @@ const Info = styled.div`
   color: white;
   background-color: rgba(0, 0, 0, 0.8);
   z-index: 2;
+
+  @media screen and (max-width: 420px) {
+    width: 100vw;
+    height: 100vh;
+  }
 `;
 
 const ChatTitle = styled.div`
@@ -332,4 +358,12 @@ const ChatTitle = styled.div`
     rgba(0, 0, 0, 1) 100%,
     rgba(0, 0, 0, 0) 100%
   );
+`;
+
+const HorizontalBar = styled.div`
+border-left 4px solid black;
+margin: 4% 0.1% ;
+@media screen and (max-width: 420px) {
+display:none;
+}
 `;

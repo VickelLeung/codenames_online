@@ -4,6 +4,7 @@ import CardContent from "@material-ui/core/CardContent";
 // import CardActions from "@material-ui/core/CardActions";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import Button from "@material-ui/core/Button";
+
 import { connect } from "react-redux";
 import styled from "styled-components";
 import { setTurn, setRedScore, setBlueScore } from "../../action/action";
@@ -12,6 +13,7 @@ const URL = "wss://thecodenamebackend.herokuapp.com/";
 
 class Cards extends PureComponent {
   ws = new WebSocket(URL);
+
   componentDidMount = () => {
     this.ws.onmessage = (evt) => {
       // on receiving a message, add it to the list of messages

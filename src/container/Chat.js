@@ -11,7 +11,10 @@ import styled from "styled-components";
 import { setJoined, setUser, setUserColor } from "../action/action";
 import Radio from "@material-ui/core/Radio";
 
-import ScrollArea from "react-scrollbar";
+import VolumeUp from "@material-ui/icons/VolumeUp";
+import VolumeOff from "@material-ui/icons/VolumeOff";
+import beepMp3 from "../sounds/clearly.mp3";
+import UIfx from "uifx";
 
 const URL = "wss://thecodenamebackend.herokuapp.com/";
 
@@ -23,6 +26,7 @@ class Chat extends Component {
     messages: [],
     isChatLoaded: false,
     checked: "red",
+    isVolume: true,
   };
 
   ws = new WebSocket(URL);
@@ -172,15 +176,35 @@ class Chat extends Component {
     });
   };
 
+  beep = new UIfx(beepMp3);
+
+  updateVolume = () => {
+    let setVolume = 0;
+    if (this.state.isVolume) {
+      setVolume = 0;
+    } else {
+      setVolume = 1;
+    }
+
+    this.beep.setVolume(setVolume);
+    this.setState({ isVolume: !this.state.isVolume });
+  };
+
   render() {
     return (
       <Wrapper>
+        <VolumeContainer>
+          <Button onClick={this.updateVolume}>
+            {this.state.isVolume ? <VolumeUp /> : <VolumeOff />}
+          </Button>
+        </VolumeContainer>
         <JoinContainer>
           {this.props.isJoined ? this.displayChat() : this.displayJoin()}
         </JoinContainer>
 
         <Bar />
         <ChatInput
+          onload={this.props.isJoined ? this.beep.play() : null}
           ws={this.ws}
           onSubmitMessage={(messageString) => this.submitMessage(messageString)}
         />
@@ -246,4 +270,10 @@ const JoinContainer = styled.div`
 const Bar = styled.div`
   border-bottom: 4px solid black;
   margin-bottom: 1% 0;
+`;
+
+const VolumeContainer = styled.div`
+  text-align: left;
+  border-right: 1px solid black;
+  border-left: 1px solid black;
 `;
