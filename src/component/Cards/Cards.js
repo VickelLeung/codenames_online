@@ -56,13 +56,13 @@ class Cards extends PureComponent {
     if (this.props.color == "green") {
       this.endTurn();
     } else {
-      if (this.props.color == "red" && this.props.currentTurn == "RED") {
+      if (this.props.color == "red" && this.props.currentTurn == "red") {
         message = {
           type: "redScore",
         };
       } else if (
         this.props.color == "red" &&
-        this.props.currentTurn == "BLUE"
+        this.props.currentTurn == "blue"
       ) {
         message = {
           type: "redScore",
@@ -70,20 +70,21 @@ class Cards extends PureComponent {
         this.endTurn();
       }
 
-      if (this.props.color == "blue" && this.props.currentTurn == "BLUE") {
+      if (this.props.color == "blue" && this.props.currentTurn == "blue") {
         message = {
           type: "blueScore",
         };
       } else if (
         this.props.color == "blue" &&
-        this.props.currentTurn == "RED"
+        this.props.currentTurn == "red"
       ) {
         message = {
           type: "blueScore",
         };
+
         this.endTurn();
       }
-
+      console.log(message);
       this.ws.send(JSON.stringify(message));
     }
 
