@@ -18,10 +18,10 @@ class Cards extends PureComponent {
 
       const message = JSON.parse(evt.data);
       switch (message.type) {
-        case "redScore":
+        case "getRedScore":
           this.props.setRedScore(message.redScore);
           break;
-        case "blueScore":
+        case "getRedScore":
           this.props.setBlueScore(message.blueScore);
           break;
       }
@@ -43,18 +43,8 @@ class Cards extends PureComponent {
   };
 
   endTurn = () => {
-    let turn = this.props.currentTurn;
-    if (turn == "RED") {
-      turn = "BLUE";
-    } else {
-      turn = "RED";
-    }
-    console.log(this.props.currentTurn);
-    this.props.setTurn(turn);
-
     const message = {
       type: "endTurn",
-      currentTurn: turn,
     };
     this.ws.send(JSON.stringify(message));
     console.log("end");
@@ -69,7 +59,6 @@ class Cards extends PureComponent {
       if (this.props.color == "red" && this.props.currentTurn == "RED") {
         message = {
           type: "redScore",
-          redScore: this.props.redScore,
         };
       } else if (
         this.props.color == "red" &&
@@ -77,7 +66,6 @@ class Cards extends PureComponent {
       ) {
         message = {
           type: "redScore",
-          redScore: this.props.redScore,
         };
         this.endTurn();
       }
@@ -85,7 +73,6 @@ class Cards extends PureComponent {
       if (this.props.color == "blue" && this.props.currentTurn == "BLUE") {
         message = {
           type: "blueScore",
-          blueScore: this.props.blueScore,
         };
       } else if (
         this.props.color == "blue" &&
@@ -93,7 +80,6 @@ class Cards extends PureComponent {
       ) {
         message = {
           type: "blueScore",
-          blueScore: this.props.blueScore,
         };
         this.endTurn();
       }

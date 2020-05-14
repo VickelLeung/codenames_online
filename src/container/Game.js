@@ -25,11 +25,22 @@ class Game extends PureComponent {
       // on connecting, do nothing but log it to the console
       console.log("connected");
       this.props.setConnection(true);
-      //get current turn on load
-      const message = {
+
+      //get current turn / team scores on load
+      const messageTurn = {
         type: "getTurn",
       };
-      this.ws.send(JSON.stringify(message));
+      this.ws.send(JSON.stringify(messageTurn));
+
+      const messageRedScore = {
+        type: "getRedScore",
+      };
+      this.ws.send(JSON.stringify(messageRedScore));
+
+      const messageBlueScore = {
+        type: "getBlueScore",
+      };
+      this.ws.send(JSON.stringify(messageBlueScore));
     };
 
     this.setState({ userInfo: this.props.details });
