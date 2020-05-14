@@ -116,7 +116,7 @@ wss.on("connection", function connection(ws) {
 
         let sendObj = {
           type: "getBlueScore",
-          redScore: blueScoreVal,
+          blueScore: blueScoreVal,
         };
         client.send(JSON.stringify(sendObj));
         // }
