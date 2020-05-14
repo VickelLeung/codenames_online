@@ -60,7 +60,6 @@ wss.on("connection", function connection(ws) {
     };
 
     alternateTurn = () => {
-      console.log("alternate");
       if (currentTurn == "red") {
         currentTurn = "blue";
       } else if (currentTurn == "blue") {
@@ -69,7 +68,6 @@ wss.on("connection", function connection(ws) {
     };
 
     const endTurn = () => {
-      console.log("end turn");
       alternateTurn();
       getTurn();
     };
@@ -104,7 +102,9 @@ wss.on("connection", function connection(ws) {
       if (redScoreVal == 0) {
         sendWin("redWon");
       } else {
+        console.log(redScoreVal);
         redScoreVal - 1;
+        console.log(redScoreVal);
         getRedScore();
       }
     };
@@ -127,7 +127,9 @@ wss.on("connection", function connection(ws) {
       if (blueScoreVal == 0) {
         sendWin("blueWon");
       } else {
+        console.log(blueScoreVal);
         blueScoreVal - 1;
+        console.log(blueScoreVal);
         getBlueScore();
       }
     };
