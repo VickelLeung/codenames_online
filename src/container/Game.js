@@ -4,7 +4,12 @@ import styled from "styled-components";
 import Chat from "../container/Chat";
 //import Countdown from "react-countdown";
 import Button from "@material-ui/core/Button";
-import { setTurn, alternateSpymaster } from "../action/action";
+import {
+  setTurn,
+  alternateSpymaster,
+  setRedScore,
+  setBlueScore,
+} from "../action/action";
 import { Scoreboard } from "../component/Scoreboard/Scoreboard";
 import { CardContainer } from "../container/CardContainer/CardContainer";
 import { setConnection } from "../action/action";
@@ -20,22 +25,31 @@ class Game extends PureComponent {
       // on connecting, do nothing but log it to the console
       console.log("connected");
       this.props.setConnection(true);
-      // const message = {
-      //   type: "getCards",
-      // };
-      // this.ws.send(JSON.stringify(message));
+      //get current turn on load
+      const message = {
+        type: "getTurn",
+      };
+      this.ws.send(JSON.stringify(message));
     };
 
     this.setState({ userInfo: this.props.details });
 
     this.ws.onmessage = (evt) => {
       // on receiving a message, add it to the list of messages
-      // const message = JSON.parse(evt.data);
       const message = JSON.parse(evt.data);
       console.log(message);
       switch (message.type) {
+        case "getTurn":
+          this.props.setTurn(message.currentTurn);
+          break;
         case "endTurn":
           this.props.setTurn(message.currentTurn);
+          break;
+        case "getRedScore":
+          this.props.setRedScore(message.redScore);
+          break;
+        case "getBlueScore":
+          this.props.setBlueScore(message.blueScore);
           break;
         case "redWon":
           alert("Red won the game");
@@ -58,17 +72,8 @@ class Game extends PureComponent {
   };
 
   endTurn = () => {
-    let turn = this.props.currentTurn;
-    if (turn == "RED") {
-      turn = "BLUE";
-    } else {
-      turn = "RED";
-    }
-    this.props.setTurn(turn);
-
     const message = {
       type: "endTurn",
-      currentTurn: turn,
     };
     this.ws.send(JSON.stringify(message));
   };
@@ -184,6 +189,12 @@ const mapDispatchToProps = (dispatch) => {
     },
     setConnection: (info) => {
       dispatch(setConnection(info));
+    },
+    setRedScore: (info) => {
+      dispatch(setRedScore(info));
+    },
+    setBlueScore: (info) => {
+      dispatch(setBlueScore(info));
     },
   };
 };
