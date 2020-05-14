@@ -180,11 +180,20 @@ wss.on("connection", function connection(ws) {
     };
 
     const nextGame = () => {
-      redScore = 10;
-      blueScore = 10;
+      redScoreVal = 10;
+      blueScoreVal = 10;
       currentTurn = "red";
       generateCards();
       getCards();
+
+      wss.clients.forEach(function each(client) {
+        // if (client !== ws && client.readyState === WebSocket.OPEN) {
+        let sendObj = {
+          type: "nextGame",
+        };
+        client.send(JSON.stringify(sendObj));
+        // }
+      });
     };
 
     const updateSpymaster = () => {
