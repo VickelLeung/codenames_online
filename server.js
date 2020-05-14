@@ -60,7 +60,7 @@ wss.on("connection", function connection(ws) {
     };
 
     alternateTurn = () => {
-      if ((currentTurn = "red")) {
+      if (currentTurn == "red") {
         currentTurn = "blue";
       } else if (currentTurn == "blue") {
         currentTurn = "red";
@@ -68,20 +68,8 @@ wss.on("connection", function connection(ws) {
     };
 
     const endTurn = () => {
-      // let getData = JSON.parse(data);
-      // console.log("end turn" + getData.currentTurn);
-
       this.alternateTurn();
-
-      wss.clients.forEach(function each(client) {
-        // if (client !== ws && client.readyState === WebSocket.OPEN) {
-        let sendObj = {
-          type: "endTurn",
-          currentTurn: currentTurn,
-        };
-        client.send(JSON.stringify(sendObj));
-        // }
-      });
+      this.getTurn();
     };
 
     const getTurn = () => {
@@ -111,22 +99,11 @@ wss.on("connection", function connection(ws) {
     };
 
     const redScore = () => {
-      let getData = JSON.parse(data);
-
       if (redScoreVal == 0) {
         sendWin("redWon");
       } else {
-        wss.clients.forEach(function each(client) {
-          // if (client !== ws && client.readyState === WebSocket.OPEN) {
-          // console.log(getData);
-
-          let sendObj = {
-            type: "redScore",
-            redScore: redScoreVal - 1,
-          };
-          client.send(JSON.stringify(sendObj));
-          // }
-        });
+        redScoreVal - 1;
+        this.getRedScore();
       }
     };
 
@@ -148,15 +125,8 @@ wss.on("connection", function connection(ws) {
       if (blueScoreVal == 0) {
         sendWin("blueWon");
       } else {
-        wss.clients.forEach(function each(client) {
-          // if (client !== ws && client.readyState === WebSocket.OPEN) {
-          let sendObj = {
-            type: "blueScore",
-            blueScore: blueScoreVal - 1,
-          };
-          client.send(JSON.stringify(sendObj));
-          // }
-        });
+        blueScoreVal - 1;
+        this.getBlueScore();
       }
     };
 
@@ -208,6 +178,7 @@ wss.on("connection", function connection(ws) {
     const nextGame = () => {
       redScore = 10;
       blueScore = 10;
+      currentTurn = "red";
       generateCards();
       getCards();
     };
