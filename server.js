@@ -96,6 +96,20 @@ wss.on("connection", function connection(ws) {
       });
     };
 
+    const getRedScore = () => {
+      wss.clients.forEach(function each(client) {
+        // if (client !== ws && client.readyState === WebSocket.OPEN) {
+        // console.log(getData);
+
+        let sendObj = {
+          type: "getRedScore",
+          redScore: redScoreVal,
+        };
+        client.send(JSON.stringify(sendObj));
+        // }
+      });
+    };
+
     const redScore = () => {
       let getData = JSON.parse(data);
 
@@ -114,6 +128,20 @@ wss.on("connection", function connection(ws) {
           // }
         });
       }
+    };
+
+    const getBlueScore = () => {
+      wss.clients.forEach(function each(client) {
+        // if (client !== ws && client.readyState === WebSocket.OPEN) {
+        // console.log(getData);
+
+        let sendObj = {
+          type: "getBlueScore",
+          redScore: blueScoreVal,
+        };
+        client.send(JSON.stringify(sendObj));
+        // }
+      });
     };
 
     const blueScore = () => {
@@ -223,6 +251,12 @@ wss.on("connection", function connection(ws) {
         break;
       case "blueScore":
         blueScore();
+        break;
+      case "getRedScore":
+        getRedScore();
+        break;
+      case "getBlueScore":
+        getBlueScore();
         break;
       case "getCards":
         getCards();
