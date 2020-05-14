@@ -60,6 +60,7 @@ class Game extends PureComponent {
           this.props.setRedScore(message.redScore);
           break;
         case "getBlueScore":
+          console.log("score" + message.blueScore);
           this.props.setBlueScore(message.blueScore);
           break;
         case "redWon":
@@ -133,7 +134,7 @@ class Game extends PureComponent {
               </ScoreContainer>
             </ScoreHolder>
 
-            {this.props.currentTurn == "RED" ? (
+            {this.props.currentTurn == "red" ? (
               <RedTurn>It's Red turn</RedTurn>
             ) : (
               <BlueTurn>It's Blue turn</BlueTurn>

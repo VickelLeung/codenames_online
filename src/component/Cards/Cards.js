@@ -21,7 +21,7 @@ class Cards extends PureComponent {
         case "getRedScore":
           this.props.setRedScore(message.redScore);
           break;
-        case "getRedScore":
+        case "getBlueScore":
           this.props.setBlueScore(message.blueScore);
           break;
       }
