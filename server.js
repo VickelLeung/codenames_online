@@ -70,7 +70,7 @@ wss.on("connection", function connection(ws) {
 
     const endTurn = () => {
       console.log("end turn");
-      this.alternateTurn();
+      alternateTurn();
       this.getTurn();
     };
 
