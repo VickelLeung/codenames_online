@@ -185,6 +185,8 @@ wss.on("connection", function connection(ws) {
       currentTurn = "red";
       generateCards();
       getCards();
+      getRedScore();
+      getBlueScore();
 
       wss.clients.forEach(function each(client) {
         // if (client !== ws && client.readyState === WebSocket.OPEN) {
