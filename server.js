@@ -71,7 +71,7 @@ wss.on("connection", function connection(ws) {
     const endTurn = () => {
       console.log("end turn");
       alternateTurn();
-      this.getTurn();
+      getTurn();
     };
 
     const getTurn = () => {
@@ -105,7 +105,7 @@ wss.on("connection", function connection(ws) {
         sendWin("redWon");
       } else {
         redScoreVal - 1;
-        this.getRedScore();
+        getRedScore();
       }
     };
 
@@ -128,7 +128,7 @@ wss.on("connection", function connection(ws) {
         sendWin("blueWon");
       } else {
         blueScoreVal - 1;
-        this.getBlueScore();
+        getBlueScore();
       }
     };
 
