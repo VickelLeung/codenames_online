@@ -11,7 +11,12 @@ const server = express().listen(PORT, () =>
 
 // latest 100 messages
 let history = [];
+
 let loadingCard = [];
+
+// team container
+let redTeams = [];
+let blueTeams = [];
 
 // score of teams
 let redScoreVal = 10;
@@ -51,6 +56,16 @@ wss.on("connection", function connection(ws) {
     };
 
     const joinChatroom = () => {
+      let getData = JSON.parse(data);
+      //assign into teams container
+      if (getData.color == "blue") {
+        blueTeams.push(getData.name);
+        getBlueTeams();
+      } else if (getData.color == "red") {
+        redTeams.push(getData.name);
+        getRedTeams();
+      }
+
       wss.clients.forEach(function each(client) {
         // if (client !== ws && client.readyState === WebSocket.OPEN) {
         data.type = "join";
@@ -180,6 +195,8 @@ wss.on("connection", function connection(ws) {
     };
 
     const nextGame = () => {
+      redTeams = [];
+      blueTeams = [];
       redScoreVal = 10;
       blueScoreVal = 10;
       currentTurn = "red";
@@ -213,6 +230,36 @@ wss.on("connection", function connection(ws) {
         let sendObj = {
           type: returnType,
           name: getData.player,
+        };
+        client.send(JSON.stringify(sendObj));
+        // }
+      });
+    };
+
+    disconnected = () => {
+      let getData = JSON.parse(data);
+      console.log(getData);
+      console.log("user disconnected");
+    };
+
+    getRedTeams = () => {
+      wss.clients.forEach(function each(client) {
+        // if (client !== ws && client.readyState === WebSocket.OPEN) {
+        let sendObj = {
+          type: "getRedTeams",
+          teams: redTeams,
+        };
+        client.send(JSON.stringify(sendObj));
+        // }
+      });
+    };
+
+    getBlueTeams = () => {
+      wss.clients.forEach(function each(client) {
+        // if (client !== ws && client.readyState === WebSocket.OPEN) {
+        let sendObj = {
+          type: "getBlueTeams",
+          teams: blueTeams,
         };
         client.send(JSON.stringify(sendObj));
         // }
@@ -255,6 +302,15 @@ wss.on("connection", function connection(ws) {
         break;
       case "spymaster":
         updateSpymaster();
+        break;
+      case "disconnected":
+        disconnected();
+        break;
+      case "getRedTeams":
+        getRedTeams();
+        break;
+      case "getBlueTeams":
+        getBlueTeams();
         break;
     }
   });
