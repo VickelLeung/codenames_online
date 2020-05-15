@@ -74,14 +74,22 @@ class Game extends PureComponent {
       // this.addMessage(message);
     };
 
-    // this.ws.onclose = () => {
-    //   console.log("disconnected");
-    //   // automatically try to reconnect on connection loss
-    //   this.setState({
-    //     ws: new WebSocket(URL),
-    //     name: this.props.details.username,
-    //   });
-    // };
+    this.ws.onclose = () => {
+      console.log("disconnected");
+      // automatically try to reconnect on connection loss
+      this.ws = new WebSocket(URL);
+    };
+
+    // window.addEventListener("beforeunload", this.keepOnPage);
+
+    window.onbeforeunload = function () {
+      const messageBlueScore = {
+        type: "disconnected",
+        username: this.props.username,
+        color: this.props.getColor,
+      };
+      this.ws.send(JSON.stringify(messageBlueScore));
+    };
   };
 
   endTurn = () => {
@@ -196,6 +204,7 @@ const mapStateToProps = (state) => {
     details: state.userDetail,
     spy: state.isSpymaster,
     isJoined: state.isJoined,
+    getColor: state.userColor,
   };
 };
 
