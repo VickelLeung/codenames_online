@@ -8,15 +8,8 @@ const URL = "wss://thecodenamebackend.herokuapp.com/";
 
 class TeamContainer extends PureComponent {
   state = {
-    blueTeam: [
-      { name: "Bruce Lee" },
-      { name: "George Bush" },
-      { name: "Bruce Lee" },
-      { name: "George Bush" },
-      { name: "Bruce Lee" },
-      { name: "George Bush" },
-    ],
-    redTeam: [{ name: "Rick James" }, { name: "John Cena" }],
+    blueTeam: [],
+    redTeam: [],
   };
 
   ws = new WebSocket(URL);
@@ -47,9 +40,9 @@ class TeamContainer extends PureComponent {
 
   addMessage = (message) => {
     console.log(message);
-    let obj = this.state.messages;
-    obj.push(message.teams);
-
+    let obj = [];
+    obj = [...message.teams];
+    console.log(obj);
     if (message.type == "getRedTeams") {
       this.setState({
         redTeam: obj,
@@ -59,7 +52,7 @@ class TeamContainer extends PureComponent {
         blueTeam: obj,
       });
     }
-    console.log(this.state.message);
+    console.log(this.state.redTeam);
   };
 
   render() {

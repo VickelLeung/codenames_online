@@ -42,6 +42,16 @@ class Game extends PureComponent {
         type: "getBlueScore",
       };
       this.ws.send(JSON.stringify(messageBlueScore));
+
+      const messagegetRedTeams = {
+        type: "getRedTeams",
+      };
+      this.ws.send(JSON.stringify(messagegetRedTeams));
+
+      const messagegetBlueTeams = {
+        type: "getBlueTeams",
+      };
+      this.ws.send(JSON.stringify(messagegetBlueTeams));
     };
 
     this.setState({ userInfo: this.props.details });
@@ -70,6 +80,9 @@ class Game extends PureComponent {
         case "blueWon":
           alert("blue won the game");
           break;
+        case "disconnect":
+          alert("disconnect receive");
+          break;
       }
       // this.addMessage(message);
     };
@@ -80,8 +93,6 @@ class Game extends PureComponent {
       this.ws = new WebSocket(URL);
     };
 
-    // window.addEventListener("beforeunload", this.keepOnPage);
-
     window.onbeforeunload = function () {
       const messageBlueScore = {
         type: "disconnected",
@@ -89,6 +100,7 @@ class Game extends PureComponent {
         color: this.props.getColor,
       };
       this.ws.send(JSON.stringify(messageBlueScore));
+      return "closing";
     };
   };
 
