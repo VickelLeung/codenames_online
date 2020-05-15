@@ -18,6 +18,8 @@ let loadingCard = [];
 let redTeams = [];
 let blueTeams = [];
 
+let disconnect = [];
+
 // score of teams
 let redScoreVal = 10;
 let blueScoreVal = 10;
@@ -240,6 +242,15 @@ wss.on("connection", function connection(ws) {
       let getData = JSON.parse(data);
       console.log(getData);
       console.log("user disconnected");
+      disconnect.push(test);
+      wss.clients.forEach(function each(client) {
+        // if (client !== ws && client.readyState === WebSocket.OPEN) {
+        let sendObj = {
+          type: "disconnect",
+        };
+        client.send(JSON.stringify(sendObj));
+        // }
+      });
     };
 
     getRedTeams = () => {
