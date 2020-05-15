@@ -13,6 +13,7 @@ import {
 import { Scoreboard } from "../component/Scoreboard/Scoreboard";
 import { CardContainer } from "../container/CardContainer/CardContainer";
 import { setConnection } from "../action/action";
+import TeamContainer from "./TeamContainer/TeamContainer";
 
 const URL = "wss://thecodenamebackend.herokuapp.com/";
 
@@ -176,6 +177,7 @@ class Game extends PureComponent {
           <HorizontalBar />
 
           <ChatContainer>
+            <TeamContainer />
             <ChatTitle>Chatroom</ChatTitle>
             <Chat />
           </ChatContainer>
