@@ -61,10 +61,10 @@ wss.on("connection", function connection(ws) {
       let getData = JSON.parse(data);
       //assign into teams container
       if (getData.color == "blue") {
-        blueTeams.push(getData.name);
+        blueTeams.push({ name: getData.name });
         getBlueTeams();
       } else if (getData.color == "red") {
-        redTeams.push(getData.name);
+        redTeams.push({ name: getData.name });
         getRedTeams();
       }
 
@@ -242,15 +242,13 @@ wss.on("connection", function connection(ws) {
       let getData = JSON.parse(data);
       console.log(getData);
       console.log("user disconnected");
-      disconnect.push(test);
-      wss.clients.forEach(function each(client) {
-        // if (client !== ws && client.readyState === WebSocket.OPEN) {
-        let sendObj = {
-          type: "disconnect",
-        };
-        client.send(JSON.stringify(sendObj));
-        // }
-      });
+      if (getData.color == "red") {
+        redTeams = people.filter((item) => item.name !== getData.username);
+      } else if (getData.color == "blue") {
+        blueTeams = people.filter((item) => item.name !== getData.username);
+      }
+      getRedTeams();
+      getBlueTeams();
     };
 
     getRedTeams = () => {
