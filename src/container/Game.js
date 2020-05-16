@@ -77,7 +77,7 @@ class Game extends PureComponent {
         case "ping":
           setTimeout(() => {
             this.pong();
-          }, 5000);
+          }, 40000);
 
           break;
       }
