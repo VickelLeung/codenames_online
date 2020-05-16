@@ -280,7 +280,7 @@ wss.on("connection", function connection(ws) {
         type: "ping",
       };
       // this.wss.send(JSON.stringify(sendObj));
-      wss.clients.send(JSON.stringify(sendObj));
+      ws.send(JSON.stringify(sendObj));
       // wss.clients.forEach(function each(client) {
       //   // if (client == ws && client.readyState === WebSocket.OPEN) {
       //   let sendObj = {
