@@ -277,12 +277,12 @@ wss.on("connection", function connection(ws) {
 
     ping = () => {
       wss.clients.forEach(function each(client) {
-        if (client == ws && client.readyState === WebSocket.OPEN) {
-          let sendObj = {
-            type: "ping",
-          };
-          client.send(JSON.stringify(sendObj));
-        }
+        // if (client == ws && client.readyState === WebSocket.OPEN) {
+        let sendObj = {
+          type: "ping",
+        };
+        client.send(JSON.stringify(sendObj));
+        // }
       });
     };
 
