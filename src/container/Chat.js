@@ -154,6 +154,7 @@ class Chat extends Component {
           width: "100%",
           overflow: "scroll",
           margin: "3% 5%",
+          overflowX: "hidden",
         }}
       >
         {this.state.messages.map((message, index) => (

@@ -14,7 +14,10 @@ export default ({ type, name, message, color }) => (
     ) : null}
     {type == "join" ? (
       <p>
-        <strong>{name}</strong> has joined the chat.
+        <strong style={{ color: color == "red" ? "#FF4A6B" : "#4CB2ED " }}>
+          {name}
+        </strong>
+        &nbsp;has joined the chat.
       </p>
     ) : null}
     {type == "spymaster" ? (

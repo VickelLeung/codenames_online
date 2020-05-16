@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 
 import Cards from "../../component/Cards/Cards";
+import CardSkeleton from "../CardSkeleton/CardSkeleton";
 
 import styled from "styled-components";
 
@@ -10,6 +11,7 @@ class CardContainer extends PureComponent {
   ws = new WebSocket(URL);
   state = {
     cards: [],
+    skeletonSize: 25,
   };
   update = (data) => {
     console.log(data);
@@ -54,6 +56,9 @@ class CardContainer extends PureComponent {
   render() {
     return (
       <Wrapper>
+        {this.state.cards
+          ? null
+          : Array(this.state.skeletonSize).fill(<CardSkeleton />)}
         {this.state.cards.map((items, index) => (
           <Cards
             key={index}
@@ -65,58 +70,6 @@ class CardContainer extends PureComponent {
             {items.name}
           </Cards>
         ))}
-        {/* {this.state.cards.map((items) => {
-          <Cards onClick={this.update} type={items.type} color={items.color}>
-            {items.name}
-          </Cards>;
-        })} */}
-
-        {/* <Cards onClick={this.update} color="red">
-          Fan
-        </Cards>
-        <Cards onClick={this.update} color="blue">
-          Blue
-        </Cards>
-        <Cards type="red" color="red" isChecked={true}>
-          Red
-        </Cards>
-        <Cards type="blue" color="blue" isChecked={true}>
-          Note
-        </Cards>
-        <Cards type="red" color="red">
-          Fan
-        </Cards>
-        <Cards color="blue">Note</Cards>
-        <Cards color="red">Fan</Cards>
-        <Cards color="blue">Note</Cards>
-        <Cards color="red">Fan</Cards>
-        <Cards color="blue">Note</Cards>
-        <Cards color="red">Fan</Cards>
-        <Cards color="blue">Note</Cards>
-        <Cards color="red">Fan</Cards>
-        <Cards color="blue">Note</Cards>
-        <Cards color="blue">Note</Cards>
-        <Cards color="red">Fan</Cards>
-        <Cards color="blue">Note</Cards>
-        <Cards color="red">Fan</Cards>
-        <Cards color="blue">Note</Cards>
-        <Cards color="blue">Note</Cards>
-
-        <Cards type="neutral" color="green" isChecked={true}>
-          Neutral
-        </Cards>
-        <Cards type="neutral" color="green">
-          Neutral
-        </Cards>
-        <Cards type="neutral" color="green">
-          Neutral
-        </Cards>
-        <Cards type="neutral" color="green">
-          Neutral
-        </Cards>
-        <Cards type="death" color="black" isChecked={true}>
-          Death
-        </Cards> */}
       </Wrapper>
     );
   }
@@ -125,7 +78,11 @@ class CardContainer extends PureComponent {
 export { CardContainer };
 
 const Wrapper = styled.div`
+  background: #f8f8f8;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  border: 1px solid #f8f8f8;
+  margin: 2% 5%;
+  padding: 2%;
 `;

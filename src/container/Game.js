@@ -2,7 +2,6 @@ import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import Chat from "../container/Chat";
-//import Countdown from "react-countdown";
 import Button from "@material-ui/core/Button";
 import {
   setTurn,
@@ -43,15 +42,7 @@ class Game extends PureComponent {
       };
       this.ws.send(JSON.stringify(messageBlueScore));
 
-      const messagegetRedTeams = {
-        type: "getRedTeams",
-      };
-      this.ws.send(JSON.stringify(messagegetRedTeams));
-
-      const messagegetBlueTeams = {
-        type: "getBlueTeams",
-      };
-      this.ws.send(JSON.stringify(messagegetBlueTeams));
+      this.pong();
     };
 
     this.setState({ userInfo: this.props.details });
@@ -83,6 +74,12 @@ class Game extends PureComponent {
         case "disconnect":
           alert("disconnect receive");
           break;
+        case "ping":
+          setTimeout(() => {
+            this.pong();
+          }, 5000);
+
+          break;
       }
       // this.addMessage(message);
     };
@@ -90,7 +87,13 @@ class Game extends PureComponent {
     this.ws.onclose = () => {
       console.log("disconnected");
       // automatically try to reconnect on connection loss
-      this.ws = new WebSocket(URL);
+      // this.ws = new WebSocket(URL);
+      const messageBlueScore = {
+        type: "disconnected",
+        username: this.props.username,
+        color: this.props.getColor,
+      };
+      this.ws.send(JSON.stringify(messageBlueScore));
     };
 
     window.onbeforeunload = function () {
@@ -102,6 +105,14 @@ class Game extends PureComponent {
       this.ws.send(JSON.stringify(messageBlueScore));
       return "closing";
     };
+  };
+
+  pong = () => {
+    console.log("pong sent");
+    const message = {
+      type: "pong",
+    };
+    this.ws.send(JSON.stringify(message));
   };
 
   endTurn = () => {
@@ -145,7 +156,7 @@ class Game extends PureComponent {
         <MainTitle>The Codenames</MainTitle>
         <Container>
           {this.props.isJoined ? null : this.displayInfo()}
-          <HorizontalBar />
+
           <GameContainer>
             <ScoreHolder>
               <Title>Scoreboard</Title>
@@ -186,18 +197,18 @@ class Game extends PureComponent {
             </UserButton>
 
             <CardContainer />
-            <EndBtn
-              style={{ margin: "1% 0" }}
-              variant="outlined"
-              onClick={this.nextGame}
-            >
-              Next game
-            </EndBtn>
           </GameContainer>
           <HorizontalBar />
 
           <ChatContainer>
-            <TeamContainer />
+            {/* <TeamContainer /> */}
+            <NextBtn
+              style={{ margin: "4% 0", color: "white", background: "black" }}
+              variant="outlined"
+              onClick={this.nextGame}
+            >
+              Next game
+            </NextBtn>
             <ChatTitle>Chatroom</ChatTitle>
             <Chat />
           </ChatContainer>
@@ -306,6 +317,8 @@ const BlueTurn = styled.div`
 `;
 
 const EndBtn = styled(Button)``;
+
+const NextBtn = styled(Button)``;
 
 const ScoreContainer = styled.div`
   font-size: 1.5em;

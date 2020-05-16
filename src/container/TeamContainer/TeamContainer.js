@@ -15,11 +15,20 @@ class TeamContainer extends PureComponent {
   ws = new WebSocket(URL);
 
   componentDidMount() {
-    // this.ws.onopen = () => {
-    //   // on connecting, do nothing but log it to the console
-    //   console.log("connected");
-    //   this.props.setConnection(true);
-    // };
+    this.ws.onopen = () => {
+      //   // on connecting, do nothing but log it to the console
+      //   console.log("connected");
+      //   this.props.setConnection(true);
+      const messagegetRedTeams = {
+        type: "getRedTeams",
+      };
+      this.ws.send(JSON.stringify(messagegetRedTeams));
+
+      const messagegetBlueTeams = {
+        type: "getBlueTeams",
+      };
+      this.ws.send(JSON.stringify(messagegetBlueTeams));
+    };
 
     this.ws.onmessage = (evt) => {
       // on receiving a message, add it to the list of messages
@@ -40,19 +49,21 @@ class TeamContainer extends PureComponent {
 
   addMessage = (message) => {
     console.log(message);
-    let obj = [];
-    obj = [...message.teams];
-    console.log(obj);
+    // let obj = [];
+    // obj = [...message.teams];
+    // console.log(obj);
+    console.log(message.teams);
     if (message.type == "getRedTeams") {
       this.setState({
-        redTeam: obj,
+        redTeam: [...message.teams],
       });
     } else if (message.type == "getBlueTeams") {
       this.setState({
-        blueTeam: obj,
+        blueTeam: [...this.state.blueTeam, message.teams],
       });
     }
     console.log(this.state.redTeam);
+    console.log(this.state.blueTeam);
   };
 
   render() {
@@ -80,6 +91,7 @@ class TeamContainer extends PureComponent {
             return (
               <Tooltip Tooltip title={items.name} placement="top" arrow>
                 <Button style={{ margi: "0" }}>
+                  {items.name}
                   <Avatar
                     style={{ margin: "0 1%" }}
                     color="#ff9999"
