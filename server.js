@@ -163,15 +163,11 @@ wss.on("connection", function connection(ws) {
     };
 
     const getCards = () => {
-      wss.clients.forEach(function each(client) {
-        // if (client.readyState === WebSocket.OPEN) {
-        let sendObj = {
-          type: "getCards",
-          cards: loadingCard,
-        };
-        client.send(JSON.stringify(sendObj));
-        // }
-      });
+      let sendObj = {
+        type: "getCards",
+        cards: loadingCard,
+      };
+      ws.send(JSON.stringify(sendObj));
     };
 
     const updateCards = () => {
