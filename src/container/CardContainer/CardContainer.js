@@ -24,7 +24,7 @@ class CardContainer extends PureComponent {
   };
 
   componentDidMount = () => {
-    console.log("Card loaded");
+    // console.log("Card loaded");
 
     this.ws.onopen = () => {
       // on connecting, do nothing but log it to the console
@@ -34,19 +34,36 @@ class CardContainer extends PureComponent {
         type: "getCards",
       };
       this.ws.send(JSON.stringify(message));
+      this.pong();
     };
 
     this.ws.onmessage = (evt) => {
       // on receiving a message, add it to the list of messages
-      console.log("testing");
       const message = JSON.parse(evt.data);
-      console.log(message);
+      // console.log(message);
       switch (message.type) {
         case "getCards":
           this.addCards(message.cards);
+        case "ping":
+          setTimeout(() => {
+            this.pong();
+          }, 40000);
           break;
       }
     };
+
+    this.ws.onclose = () => {
+      console.log("disconnected");
+      // automatically try to reconnect on connection loss
+      this.ws = new WebSocket(URL);
+    };
+  };
+
+  pong = () => {
+    const message = {
+      type: "pong",
+    };
+    this.ws.send(JSON.stringify(message));
   };
 
   addCards = (card) => {

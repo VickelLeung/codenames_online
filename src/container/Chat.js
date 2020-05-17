@@ -32,17 +32,18 @@ class Chat extends Component {
   ws = new WebSocket(URL);
 
   componentDidMount() {
-    // this.ws.onopen = () => {
-    //   // on connecting, do nothing but log it to the console
-    //   console.log("connected");
-    //   this.props.setConnection(true);
-    // };
+    this.ws.onopen = () => {
+      // on connecting, do nothing but log it to the console
+      // console.log("connected");
+      // this.props.setConnection(true);
+      this.pong();
+    };
 
     this.ws.onmessage = (evt) => {
       // on receiving a message, add it to the list of messages
       // const message = JSON.parse(evt.data);
       const message = JSON.parse(evt.data);
-      console.log(message.type);
+      // console.log(message.type);
 
       switch (message.type) {
         case "chat":
@@ -56,29 +57,41 @@ class Chat extends Component {
           break;
         case "player":
           this.addMessage(message);
+        case "ping":
+          setTimeout(() => {
+            this.pong();
+          }, 40000);
           break;
       }
     };
 
-    // this.ws.onclose = () => {
-    //   console.log("disconnected");
-    //   // automatically try to reconnect on connection loss
-    //   this.setState({
-    //     ws: new WebSocket(URL),
-    //     name: this.props.details.username,
-    //   });
-    // };
+    this.ws.onclose = () => {
+      console.log("disconnected");
+      // automatically try to reconnect on connection loss
+      // this.setState({
+      this.ws = new WebSocket(URL);
+      // name: this.props.details.username,
+      // });
+    };
   }
 
+  pong = () => {
+    // console.log("pong sent");
+    const message = {
+      type: "pong",
+    };
+    this.ws.send(JSON.stringify(message));
+  };
+
   addMessage = (message) => {
-    console.log(message);
+    // console.log(message);
     let obj = this.state.messages;
     obj.push(message);
     this.setState({
       message: obj,
     });
     // this.setState((state) => ({ messages: [message, ...this.state.messages] }));
-    console.log(this.state.message);
+    // console.log(this.state.message);
     this.scrollToBottom();
   };
 

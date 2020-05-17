@@ -14,7 +14,6 @@ const initialState = {
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case "SET_USER":
-      console.log("test");
       return { ...state, username: action.payload };
     case "SET_TURN":
       return { ...state, currentTurn: action.payload };
@@ -23,7 +22,6 @@ export default function reducer(state = initialState, action) {
     case "SET_BLUESCORE":
       return { ...state, blueScore: action.payload };
     case "ALTERNATE_SPYMASTER":
-      console.log("asd");
       return { ...state, isSpymaster: action.payload };
     case "SET_DEATH":
       return { ...state, isDeath: true };

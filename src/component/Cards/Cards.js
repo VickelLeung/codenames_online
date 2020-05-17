@@ -15,6 +15,13 @@ class Cards extends PureComponent {
   ws = new WebSocket(URL);
 
   componentDidMount = () => {
+    this.ws.onopen = () => {
+      // on connecting, do nothing but log it to the console
+      console.log("connected");
+
+      this.pong();
+    };
+
     this.ws.onmessage = (evt) => {
       // on receiving a message, add it to the list of messages
 
@@ -25,9 +32,27 @@ class Cards extends PureComponent {
           break;
         case "getBlueScore":
           this.props.setBlueScore(message.blueScore);
+        case "ping":
+          setTimeout(() => {
+            this.pong();
+          }, 40000);
           break;
       }
     };
+
+    this.ws.onclose = () => {
+      console.log("disconnected");
+      // automatically try to reconnect on connection loss
+      this.ws = new WebSocket(URL);
+    };
+  };
+
+  pong = () => {
+    // console.log("pong sent");
+    const message = {
+      type: "pong",
+    };
+    this.ws.send(JSON.stringify(message));
   };
 
   getColors = () => {
@@ -49,11 +74,11 @@ class Cards extends PureComponent {
       type: "endTurn",
     };
     this.ws.send(JSON.stringify(message));
-    console.log("end");
+    // console.log("end");
   };
 
   sendToServer = () => {
-    console.log(this.props.color);
+    // console.log(this.props.color);
     let message = {};
     if (this.props.color == "green") {
       this.endTurn();
@@ -86,7 +111,7 @@ class Cards extends PureComponent {
 
         this.endTurn();
       }
-      console.log(message);
+      // console.log(message);
       this.ws.send(JSON.stringify(message));
     }
 

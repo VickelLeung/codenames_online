@@ -50,7 +50,7 @@ class Game extends PureComponent {
     this.ws.onmessage = (evt) => {
       // on receiving a message, add it to the list of messages
       const message = JSON.parse(evt.data);
-      console.log(message);
+      // console.log(message);
       switch (message.type) {
         case "getTurn":
           this.props.setTurn(message.currentTurn);
@@ -62,7 +62,6 @@ class Game extends PureComponent {
           this.props.setRedScore(message.redScore);
           break;
         case "getBlueScore":
-          console.log("score" + message.blueScore);
           this.props.setBlueScore(message.blueScore);
           break;
         case "redWon":
@@ -78,7 +77,6 @@ class Game extends PureComponent {
           setTimeout(() => {
             this.pong();
           }, 40000);
-
           break;
       }
       // this.addMessage(message);
@@ -87,13 +85,7 @@ class Game extends PureComponent {
     this.ws.onclose = () => {
       console.log("disconnected");
       // automatically try to reconnect on connection loss
-      // this.ws = new WebSocket(URL);
-      const messageBlueScore = {
-        type: "disconnected",
-        username: this.props.username,
-        color: this.props.getColor,
-      };
-      this.ws.send(JSON.stringify(messageBlueScore));
+      this.ws = new WebSocket(URL);
     };
 
     window.onbeforeunload = function () {
@@ -108,7 +100,6 @@ class Game extends PureComponent {
   };
 
   pong = () => {
-    console.log("pong sent");
     const message = {
       type: "pong",
     };
@@ -131,7 +122,6 @@ class Game extends PureComponent {
 
   alternateSpy = (value) => {
     //send back to server
-    console.log(this.props.username);
     const message = {
       type: "spymaster",
       player: this.props.username,
