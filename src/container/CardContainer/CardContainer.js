@@ -56,7 +56,7 @@ class CardContainer extends PureComponent {
   render() {
     return (
       <Wrapper>
-        {this.state.cards
+        {this.state.cards.length != 0
           ? null
           : Array(this.state.skeletonSize).fill(<CardSkeleton />)}
         {this.state.cards.map((items, index) => (
