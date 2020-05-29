@@ -379,7 +379,7 @@ const generateCards = () => {
       }
 
       //assign 9 blue cards
-      for (let i = 9; i < 18; i++) {
+      for (let i = 8; i < 17; i++) {
         let card = {
           name: obj[randomNumbers[i]].name,
           type: "blue",
@@ -389,7 +389,7 @@ const generateCards = () => {
         cardContainer.push(card);
       }
       //assign 8 red cards
-      for (let i = 18; i < 26; i++) {
+      for (let i = 17; i < 25; i++) {
         let card = {
           name: obj[randomNumbers[i]].name,
           type: "red",
