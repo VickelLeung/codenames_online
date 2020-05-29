@@ -195,8 +195,8 @@ wss.on("connection", function connection(ws) {
     const nextGame = () => {
       redTeams = [];
       blueTeams = [];
-      redScoreVal = 10;
-      blueScoreVal = 10;
+      redScoreVal = 8;
+      blueScoreVal = 9;
       currentTurn = "red";
       generateCards();
       getCards();
