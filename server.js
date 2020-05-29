@@ -21,8 +21,8 @@ let blueTeams = [];
 let disconnect = [];
 
 // score of teams
-let redScoreVal = 10;
-let blueScoreVal = 10;
+let redScoreVal = 8;
+let blueScoreVal = 9;
 let currentTurn = "red";
 
 mongoose.connect(process.env.uri, {
@@ -357,7 +357,7 @@ const generateCards = () => {
       }
 
       //assign 4 as neutral
-      for (let i = 0; i < 4; i++) {
+      for (let i = 0; i < 7; i++) {
         let card = {
           name: obj[randomNumbers[i]].name,
           type: "neutral",
@@ -368,7 +368,7 @@ const generateCards = () => {
       }
 
       //assign 1 as death cards
-      for (let i = 4; i < 5; i++) {
+      for (let i = 7; i < 8; i++) {
         let card = {
           name: obj[randomNumbers[i]].name,
           type: "death",
@@ -378,8 +378,8 @@ const generateCards = () => {
         cardContainer.push(card);
       }
 
-      //assign 10 blue cards
-      for (let i = 5; i < 15; i++) {
+      //assign 9 blue cards
+      for (let i = 9; i < 18; i++) {
         let card = {
           name: obj[randomNumbers[i]].name,
           type: "blue",
@@ -388,8 +388,8 @@ const generateCards = () => {
         };
         cardContainer.push(card);
       }
-      //assign 10 red cards
-      for (let i = 15; i < 25; i++) {
+      //assign 8 red cards
+      for (let i = 18; i < 26; i++) {
         let card = {
           name: obj[randomNumbers[i]].name,
           type: "red",
