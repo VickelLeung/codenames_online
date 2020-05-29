@@ -12,8 +12,10 @@ class ModalContainer extends PureComponent {
       <Modal open={this.props.isModal} onclose={true}>
         <Wrapper>
           <p>Welcome to Codenames, below is a video explaining the game</p>
-          <ReactPlayer
+          <ReactVideo
             url="https://www.youtube.com/watch?v=zQVHkl8oQEU"
+            height="40vh"
+            width="60vw"
             playing={false}
             volume={true}
             controls={true}
@@ -45,3 +47,5 @@ const LinkBtn = styled(Link)`
   margin: 4% 0;
   text-decoration: none;
 `;
+
+const ReactVideo = styled(ReactPlayer)``;

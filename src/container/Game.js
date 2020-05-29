@@ -274,8 +274,10 @@ const ChatContainer = styled.div`
   width: 30vw;
   margin: 5% 2%;
   @media screen and (max-width: 420px) {
+    display: flex;
+
     flex-direction: column;
-    width: 90vw;
+    width: 95vw;
   }
 `;
 
@@ -291,6 +293,9 @@ const RedTurn = styled.div`
     rgba(0, 0, 0, 1) 100%,
     rgba(255, 0, 0, 0) 100%
   );
+  @media screen and (max-width: 420px) {
+    width: 80%;
+  }
 `;
 
 const BlueTurn = styled.div`
@@ -304,6 +309,9 @@ const BlueTurn = styled.div`
     rgba(0, 0, 0, 1) 100%,
     rgba(255, 0, 0, 0) 100%
   );
+  @media screen and (max-width: 420px) {
+    width: 80%;
+  }
 `;
 
 const EndBtn = styled(Button)``;
@@ -339,6 +347,9 @@ const Title = styled.div`
 
 const ScoreHolder = styled.div`
   width: 50%;
+  @media screen and (max-width: 420px) {
+    width: 80%;
+  }
 `;
 
 const InfoContainer = styled.div`
@@ -351,6 +362,10 @@ const UserButton = styled.div`
   flex-direction: row;
   width: 50%;
   justify-content: space-between;
+
+  @media screen and (max-width: 420px) {
+    width: 80%;
+  }
 `;
 
 const Info = styled.div`
@@ -370,7 +385,13 @@ const Info = styled.div`
 
   @media screen and (max-width: 420px) {
     width: 100vw;
-    height: 100vh;
+    height: 90vh;
+  }
+  @media screen and (max-width: 400px) {
+    height: 95vh;
+  }
+  @media screen and (max-width: 320px) {
+    height: 110vh;
   }
 `;
 

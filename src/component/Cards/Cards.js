@@ -140,7 +140,7 @@ class Cards extends PureComponent {
             this.sendToServer();
           }}
         >
-          <CardContent>
+          <CardContent style={{ padding: "5%" }}>
             <Word style={this.props.spy ? this.displaySpymaster : null}>
               {this.props.children}
             </Word>
@@ -179,6 +179,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Cards);
 
 const Word = styled.p`
   font-weight: bold;
+  font-size: 1.2em;
 `;
 
 const CardItem = styled(Card)`

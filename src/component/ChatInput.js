@@ -56,7 +56,11 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, null)(ChatInput);
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  @media screen and (max-width: 420px) {
+    margin-bottom: 5%;
+  }
+`;
 
 const Send = styled.input`
   width: 20%;

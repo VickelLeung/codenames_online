@@ -77,7 +77,7 @@ class CardContainer extends PureComponent {
           ? null
           : Array(this.state.skeletonSize).fill(<CardSkeleton />)}
         {this.state.cards.map((items, index) => (
-          <Cards
+          <CardItem
             key={index}
             onClick={this.update}
             type={items.type}
@@ -85,7 +85,7 @@ class CardContainer extends PureComponent {
             isChecked={items.isChecked}
           >
             {items.name}
-          </Cards>
+          </CardItem>
         ))}
       </Wrapper>
     );
@@ -102,4 +102,15 @@ const Wrapper = styled.div`
   border: 1px solid #f8f8f8;
   margin: 2% 5%;
   padding: 2%;
+
+  @media screen and (max-width: 420px) {
+    margin: 0px;
+    padding: 0px;
+  }
+`;
+
+const CardItem = styled(Cards)`
+  .MuiCardContent-root {
+    padding: 0;
+  }
 `;
