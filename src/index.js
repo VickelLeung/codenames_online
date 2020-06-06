@@ -6,13 +6,20 @@ import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
 import reducer from "./reducer/reducer";
 import { createStore } from "redux";
+import { SnackbarProvider } from "notistack";
 
 const stores = createStore(reducer);
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={stores}>
-      <App />
+      <SnackbarProvider
+        anchorOrigin={{ horizontal: "left", vertical: "top" }}
+        autoHideDuration={4000}
+        maxSnack={3}
+      >
+        <App />
+      </SnackbarProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")

@@ -13,6 +13,8 @@ import { Scoreboard } from "../component/Scoreboard/Scoreboard";
 import { CardContainer } from "../container/CardContainer/CardContainer";
 import { setConnection } from "../action/action";
 import TeamContainer from "./TeamContainer/TeamContainer";
+// import AlertItem from "../component/Alert/AlertItem";
+import { withSnackbar } from "notistack";
 
 const URL = "wss://thecodenamebackend.herokuapp.com/";
 
@@ -53,6 +55,7 @@ class Game extends PureComponent {
       // console.log(message);
       switch (message.type) {
         case "getTurn":
+          console.log("turn");
           this.props.setTurn(message.currentTurn);
           break;
         case "endTurn":
@@ -72,6 +75,9 @@ class Game extends PureComponent {
           break;
         case "disconnect":
           alert("disconnect receive");
+          break;
+        case "snackbar":
+          this.handleSnack(message.user, message.item);
           break;
         case "ping":
           setTimeout(() => {
@@ -140,10 +146,15 @@ class Game extends PureComponent {
     );
   };
 
+  handleSnack = (user, item) => {
+    this.props.enqueueSnackbar(user + " chosed " + item);
+  };
+
   render() {
     return (
       <Wrapper>
         <MainTitle>The Codenames</MainTitle>
+
         <Container>
           {this.props.isJoined ? null : this.displayInfo()}
 
@@ -241,14 +252,14 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Game);
+export default connect(mapStateToProps, mapDispatchToProps)(withSnackbar(Game));
 
 const Wrapper = styled.div`
   text-align: center;
 `;
 
 const Container = styled.div`
-  height: 90vh;
+  height: 85vh;
   display: flex;
   flex-direction: row;
 

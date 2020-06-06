@@ -12,6 +12,7 @@
     "antd": "^4.2.0",
     "axios": "^0.19.2",
     "moment": "^2.25.1",
+    "notistack": "^0.9.16",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-avatar": "^3.9.6",
