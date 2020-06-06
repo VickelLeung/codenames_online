@@ -179,13 +179,24 @@ wss.on("connection", function connection(ws) {
           break;
         }
       }
-
       wss.clients.forEach(function each(client) {
         // if (client.readyState === WebSocket.OPEN) {
 
         let sendObj = {
           type: "getCards",
           cards: loadingCard,
+        };
+        client.send(JSON.stringify(sendObj));
+        // }
+      });
+
+      //send snackbar
+      wss.clients.forEach(function each(client) {
+        // if (client.readyState === WebSocket.OPEN) {
+        let sendObj = {
+          type: "snackbar",
+          user: getData.user,
+          item: getData.name,
         };
         client.send(JSON.stringify(sendObj));
         // }
