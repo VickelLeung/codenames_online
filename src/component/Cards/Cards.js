@@ -114,8 +114,8 @@ class Cards extends PureComponent {
       // console.log(message);
       this.ws.send(JSON.stringify(message));
     }
-
-    this.props.onClick(this.props.children);
+    let info = { name: this.props.user, item: this.props.children };
+    this.props.onClick(info);
   };
 
   displaySpymaster = { color: this.props.color };
@@ -153,6 +153,7 @@ class Cards extends PureComponent {
 
 const mapStateToProps = (state) => {
   return {
+    user: state.username,
     redScore: state.redScore,
     blueScore: state.blueScore,
     currentTurn: state.currentTurn,

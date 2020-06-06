@@ -14,11 +14,12 @@ class CardContainer extends PureComponent {
     skeletonSize: 25,
   };
   update = (data) => {
-    console.log(data);
+    console.log(data.item);
 
     const message = {
       type: "updateCards",
-      name: data,
+      name: data.item,
+      user: data.user,
     };
     this.ws.send(JSON.stringify(message));
   };
