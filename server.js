@@ -167,9 +167,7 @@ wss.on("connection", function connection(ws) {
         type: "getCards",
         cards: loadingCard,
       };
-      if (client.readyState === WebSocket.OPEN) {
-        ws.send(JSON.stringify(sendObj));
-      }
+      ws.send(JSON.stringify(sendObj));
     };
 
     const updateCards = () => {
