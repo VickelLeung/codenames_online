@@ -215,12 +215,10 @@ wss.on("connection", function connection(ws) {
       getBlueScore();
 
       wss.clients.forEach(function each(client) {
-        if (client.readyState === WebSocket.OPEN) {
-          let sendObj = {
-            type: "nextGame",
-          };
-          client.send(JSON.stringify(sendObj));
-        }
+        let sendObj = {
+          type: "nextGame",
+        };
+        client.send(JSON.stringify(sendObj));
       });
     };
 
