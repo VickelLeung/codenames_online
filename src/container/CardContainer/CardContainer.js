@@ -2,7 +2,7 @@ import React, { PureComponent } from "react";
 
 import Cards from "../../component/Cards/Cards";
 import CardSkeleton from "../CardSkeleton/CardSkeleton";
-
+import { connect } from "react-redux";
 import styled from "styled-components";
 
 const URL = "wss://thecodenamebackend.herokuapp.com/";
@@ -14,13 +14,14 @@ class CardContainer extends PureComponent {
     skeletonSize: 25,
   };
   update = (data) => {
-    console.log(data.item);
+    // console.log(data.item);
 
     const message = {
       type: "updateCards",
       name: data.item,
-      user: data.user,
+      user: this.props.username,
     };
+
     this.ws.send(JSON.stringify(message));
   };
 
@@ -92,8 +93,13 @@ class CardContainer extends PureComponent {
     );
   }
 }
+const mapStateToProps = (state) => {
+  return {
+    username: state.username,
+  };
+};
 
-export { CardContainer };
+export default connect(mapStateToProps, null)(CardContainer);
 
 const Wrapper = styled.div`
   background: #f8f8f8;

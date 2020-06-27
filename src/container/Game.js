@@ -10,7 +10,7 @@ import {
   setBlueScore,
 } from "../action/action";
 import { Scoreboard } from "../component/Scoreboard/Scoreboard";
-import { CardContainer } from "../container/CardContainer/CardContainer";
+import CardContainer from "../container/CardContainer/CardContainer";
 import { setConnection } from "../action/action";
 import TeamContainer from "./TeamContainer/TeamContainer";
 // import AlertItem from "../component/Alert/AlertItem";
