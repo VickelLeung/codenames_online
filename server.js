@@ -167,7 +167,9 @@ wss.on("connection", function connection(ws) {
         type: "getCards",
         cards: loadingCard,
       };
-      ws.send(JSON.stringify(sendObj));
+      if (client.readyState === WebSocket.OPEN) {
+        ws.send(JSON.stringify(sendObj));
+      }
     };
 
     const updateCards = () => {
@@ -215,12 +217,12 @@ wss.on("connection", function connection(ws) {
       getBlueScore();
 
       wss.clients.forEach(function each(client) {
-        // if (client !== ws && client.readyState === WebSocket.OPEN) {
-        let sendObj = {
-          type: "nextGame",
-        };
-        client.send(JSON.stringify(sendObj));
-        // }
+        if (client.readyState === WebSocket.OPEN) {
+          let sendObj = {
+            type: "nextGame",
+          };
+          client.send(JSON.stringify(sendObj));
+        }
       });
     };
 
