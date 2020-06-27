@@ -163,11 +163,13 @@ wss.on("connection", function connection(ws) {
     };
 
     const getCards = () => {
-      let sendObj = {
-        type: "getCards",
-        cards: loadingCard,
-      };
-      ws.send(JSON.stringify(sendObj));
+      wss.clients.forEach(function each(client) {
+        let sendObj = {
+          type: "getCards",
+          cards: loadingCard,
+        };
+        ws.send(JSON.stringify(sendObj));
+      });
     };
 
     const updateCards = () => {
