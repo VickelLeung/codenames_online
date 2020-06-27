@@ -168,7 +168,7 @@ wss.on("connection", function connection(ws) {
           type: "getCards",
           cards: loadingCard,
         };
-        ws.send(JSON.stringify(sendObj));
+        client.send(JSON.stringify(sendObj));
       });
     };
 
