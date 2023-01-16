@@ -16,10 +16,10 @@ import TeamContainer from "./TeamContainer/TeamContainer";
 // import AlertItem from "../component/Alert/AlertItem";
 import { withSnackbar } from "notistack";
 
-const URL = "wss://thecodenamebackend.herokuapp.com/";
+import { URL } from "../constant/constant";
 
 class Game extends PureComponent {
-  ws = new WebSocket(URL);
+  ws = new WebSocket(URL.base);
 
   state = { userInfo: {} };
   componentDidMount = () => {
@@ -91,7 +91,7 @@ class Game extends PureComponent {
     this.ws.onclose = () => {
       console.log("disconnected");
       // automatically try to reconnect on connection loss
-      this.ws = new WebSocket(URL);
+      this.ws = new WebSocket(URL.base);
     };
 
     window.onbeforeunload = function () {

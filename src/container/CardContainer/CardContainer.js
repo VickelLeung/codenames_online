@@ -5,10 +5,10 @@ import CardSkeleton from "../CardSkeleton/CardSkeleton";
 import { connect } from "react-redux";
 import styled from "styled-components";
 
-const URL = "wss://thecodenamebackend.herokuapp.com/";
+import { URL } from "../../constant/constant";
 
 class CardContainer extends PureComponent {
-  ws = new WebSocket(URL);
+  ws = new WebSocket(URL.base);
   state = {
     cards: [],
     skeletonSize: 25,
@@ -42,7 +42,6 @@ class CardContainer extends PureComponent {
     this.ws.onmessage = (evt) => {
       // on receiving a message, add it to the list of messages
       const message = JSON.parse(evt.data);
-      // console.log(message);
       switch (message.type) {
         case "getCards":
           this.addCards(message.cards);
@@ -57,7 +56,7 @@ class CardContainer extends PureComponent {
     this.ws.onclose = () => {
       console.log("disconnected");
       // automatically try to reconnect on connection loss
-      this.ws = new WebSocket(URL);
+      this.ws = new WebSocket(URL.base);
     };
   };
 

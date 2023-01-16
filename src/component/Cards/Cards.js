@@ -9,10 +9,10 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import { setTurn, setRedScore, setBlueScore } from "../../action/action";
 
-const URL = "wss://thecodenamebackend.herokuapp.com/";
+import { URL } from "../../constant/constant";
 
 class Cards extends PureComponent {
-  ws = new WebSocket(URL);
+  ws = new WebSocket(URL.base);
 
   componentDidMount = () => {
     this.ws.onopen = () => {
@@ -43,7 +43,7 @@ class Cards extends PureComponent {
     this.ws.onclose = () => {
       console.log("disconnected");
       // automatically try to reconnect on connection loss
-      this.ws = new WebSocket(URL);
+      this.ws = new WebSocket(URL.base);
     };
   };
 

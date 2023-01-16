@@ -15,8 +15,7 @@ import VolumeUp from "@material-ui/icons/VolumeUp";
 import VolumeOff from "@material-ui/icons/VolumeOff";
 import beepMp3 from "../sounds/clearly.mp3";
 import UIfx from "uifx";
-
-const URL = "wss://thecodenamebackend.herokuapp.com/";
+import { URL } from "../constant/constant";
 
 class Chat extends Component {
   state = {
@@ -29,7 +28,7 @@ class Chat extends Component {
     isVolume: true,
   };
 
-  ws = new WebSocket(URL);
+  ws = new WebSocket(URL.base);
 
   componentDidMount() {
     this.ws.onopen = () => {
@@ -69,7 +68,7 @@ class Chat extends Component {
       console.log("disconnected");
       // automatically try to reconnect on connection loss
       // this.setState({
-      this.ws = new WebSocket(URL);
+      this.ws = new WebSocket(URL.base);
       // name: this.props.details.username,
       // });
     };
